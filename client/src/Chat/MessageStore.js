@@ -1,10 +1,10 @@
-var EventEmitter = require('eventemitter3');
+import EventEmitter from 'eventemitter3';
 
-var emitter = new EventEmitter();
+const emitter = new EventEmitter();
 
-var messages = [];
+let messages = [];
 
-module.exports = {
+export default {
   getMessages: function() {
     return messages.concat();
   },

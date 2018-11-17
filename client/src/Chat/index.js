@@ -12,7 +12,7 @@ class Chat extends Component {
     connected: ConnectionManager.isConnected(),
   };
 
-  componentWillMount() {
+  componentDidMount() {
     MessageStore.subscribe(this.updateMessages);
     ConnectionManager.onStatusChange(this.updateConnection);
     ConnectionManager.onMessage(MessageStore.newMessage);
@@ -44,13 +44,21 @@ class Chat extends Component {
   render() {
     return (
       <div>
-        <MessageList messages={this.state.messages} />
-        <MessageForm onSend={this.onSend} />
-        <ConnectionForm
-          connected={this.state.connected}
-          onHost={ConnectionManager.host}
-          onJoin={ConnectionManager.join}
-        />
+        {this.state.connected ? (
+          <>
+            <MessageList messages={this.state.messages} />
+            <MessageForm onSend={this.onSend} />
+          </>
+        ) : (
+          <>
+            <p>Please connect!</p>
+            <ConnectionForm
+              connected={this.state.connected}
+              onHost={ConnectionManager.host}
+              onJoin={ConnectionManager.join}
+            />
+          </>
+        )}
       </div>
     );
   }

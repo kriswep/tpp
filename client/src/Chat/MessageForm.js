@@ -5,8 +5,8 @@ class MessageForm extends Component {
     input: '',
   };
 
-  submit = ev => {
-    ev.preventDefault();
+  submit = e => {
+    e.preventDefault();
 
     this.props.onSend(this.state.input);
 
@@ -15,8 +15,8 @@ class MessageForm extends Component {
     });
   };
 
-  updateInput = ev => {
-    this.setState({ input: ev.target.value });
+  updateInput = e => {
+    this.setState({ input: e.target.value });
   };
 
   render() {
