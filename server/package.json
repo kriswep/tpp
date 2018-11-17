@@ -1,0 +1,31 @@
+{
+  "name": "tpp-signaling",
+  "version": "0.1.0",
+  "private": true,
+  "description": "signaling service for tpp",
+  "main": "/src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/index.js"
+  },
+  "dependencies": {
+    "ws": "^6.1.1"
+  },
+  "devDependencies": {
+    "prettier": "^1.15.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kriswep/tpp.git"
+  },
+  "author": "Christoph Benjamin Weber",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kriswep/tpp/issues"
+  },
+  "homepage": "https://github.com/kriswep/tpp#readme",
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all"
+  }
+}
