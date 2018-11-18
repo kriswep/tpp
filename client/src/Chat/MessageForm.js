@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import Input from '../components/Input';
+import Button from '../components/Button';
+
 class MessageForm extends Component {
   state = {
     input: '',
@@ -22,12 +25,12 @@ class MessageForm extends Component {
   render() {
     return (
       <form onSubmit={this.submit}>
-        <input
+        <Input
           value={this.state.input}
           onChange={this.updateInput}
           type="text"
         />
-        <input type="submit" value="Send" />
+        <Button as="input" type="submit" value="Send" />
       </form>
     );
   }
