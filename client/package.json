@@ -39,7 +39,6 @@
   "bugs": {
     "url": "https://github.com/kriswep/tpp/issues"
   },
-  "homepage": "https://github.com/kriswep/tpp#readme",
   "prettier": {
     "singleQuote": true,
     "trailingComma": "all"

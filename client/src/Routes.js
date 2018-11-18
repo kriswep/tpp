@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Router } from '@reach/router';
 
 import Home from './Home';
-import Chat from './Chat';
+const Chat = lazy(() => import('./Chat' /* webpackChunkName: "chat" */));
 
 const Routes = props => {
   return (
