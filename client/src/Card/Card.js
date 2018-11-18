@@ -8,15 +8,15 @@ const transform = scale => props => {
   switch (props.idx) {
     case 1:
       deg = -90;
-      translateY = 150;
+      translateY = 200;
       break;
     case 2:
       deg = -72;
-      translateY = 120;
+      translateY = 150;
       break;
     case 3:
       deg = -54;
-      translateY = 90;
+      translateY = 110;
       break;
     case 4:
       deg = -36;
@@ -41,15 +41,15 @@ const transform = scale => props => {
       break;
     case 9:
       deg = 54;
-      translateY = 90;
+      translateY = 110;
       break;
     case 10:
       deg = 72;
-      translateY = 120;
+      translateY = 150;
       break;
     case 11:
       deg = 90;
-      translateY = 150;
+      translateY = 200;
       break;
 
     default:
@@ -100,6 +100,7 @@ const Card = styled(
     theme.mode === 'dark' ? theme.light : theme.dark};
   border: ${({ theme }) =>
     `1px solid ${theme.mode === 'dark' ? theme.dark : theme.light}`};
+  border-radius: 0.5rem;
   height: 200px;
   width: 100px;
   display: grid;
