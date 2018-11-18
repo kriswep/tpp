@@ -1,11 +1,14 @@
 import React from 'react';
 
+import Text from '../components/Text';
+import Button from '../components/Button';
+
 const ConnectionForm = props => {
   return (
     <div>
-      {props.connected ? 'Connected' : 'Not connected'}
-      <button onClick={props.onHost}>Host</button>
-      <button onClick={props.onJoin}>Join</button>
+      {props.connected ? <Text>Connected</Text> : <Text>Not connected</Text>}
+      <Button onClick={props.onHost}>Host</Button>
+      <Button onClick={props.onJoin}>Join</Button>
     </div>
   );
 };

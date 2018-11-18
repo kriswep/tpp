@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Text from '../components/Text';
 import ChatMessage from './ChatMessage';
 
 const MessageList = props => {
@@ -7,7 +8,11 @@ const MessageList = props => {
     return <ChatMessage message={msg} key={i} />;
   });
 
-  return <div>{messages}</div>;
+  return (
+    <div>
+      <Text>{messages}</Text>
+    </div>
+  );
 };
 
 export default MessageList;

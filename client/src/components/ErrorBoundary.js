@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Text from './Text';
+
 export default class extends Component {
   state = { hasError: false, error: null };
 
@@ -9,7 +11,7 @@ export default class extends Component {
 
   render() {
     return this.state.hasError
-      ? console.log(this.state.error) || <p>An error occured</p>
+      ? console.log(this.state.error) || <Text>An error occured</Text>
       : this.props.children;
   }
 }

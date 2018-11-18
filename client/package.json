@@ -16,7 +16,8 @@
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1",
     "simple-peer": "^9.1.2",
-    "simple-websocket": "^7.2.0"
+    "simple-websocket": "^7.2.0",
+    "styled-components": "^4.1.1"
   },
   "devDependencies": {
     "prettier": "^1.15.2"

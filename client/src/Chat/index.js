@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import Text from '../components/Text';
 import MessageList from './MessageList';
 import MessageForm from './MessageForm';
 import MessageStore from './MessageStore';
@@ -51,7 +52,7 @@ class Chat extends Component {
           </>
         ) : (
           <>
-            <p>Please connect!</p>
+            <Text>Please connect!</Text>
             <ConnectionForm
               connected={this.state.connected}
               onHost={ConnectionManager.host}

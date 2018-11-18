@@ -1,9 +1,11 @@
 import React from 'react';
 
+import Text from './components/Text';
+
 const Home = props => {
   return (
     <div>
-      <p>Team Planning Poker</p>
+      <Text>Team Planning Poker</Text>
     </div>
   );
 };
