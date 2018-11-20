@@ -4,6 +4,13 @@ import posed from 'react-pose';
 const height = window.innerHeight;
 
 const transform = scale => props => {
+  if (props.setPose === 'selected')
+    return `scale(1.1) translateX(0px) translateY(-20px) rotate(0deg)`;
+  if (props.setPose === 'choosen')
+    return `scale(1.5) translateX(0px) translateY(-60px) rotate(0deg)`;
+  if (props.setPose === 'hidden')
+    return `scale(1) translateX(150px) translateY(-250px) rotate(0deg)`;
+
   let deg = 0;
   let translateX = 0;
   let translateY = -height + 250;
@@ -81,24 +88,37 @@ const Card = styled(
     hoverable: true,
     pressable: true,
     init: {
-      boxShadow: '0px 0px 0px rgba(220,220,220,0)',
+      // boxShadow: '0px 0px 0px rgba(220,220,220,0)',
       transform: transform(1),
       'z-index': ({ idx }) => idx,
     },
     hover: {
-      boxShadow: '0px 5px 10px rgba(220,220,220,0.2)',
       transform: transform(1.2),
       // transform: 'scale(1.2)',
       'z-index': 1000,
     },
     press: {
-      boxShadow: '0px 2px 5px rgba(220,220,220,0.1)',
-      transform: 'scale(1.1) translateX(0px) translateY(-20px) rotate(0deg)',
+      transform: transform(1.1),
+      // transform: 'scale(1.1) translateX(0px) translateY(-20px) rotate(0deg)',
+      // transform: props =>
+      //   props.endPose
+      //     ? ''
+      //     : 'scale(1.1) translateX(0px) translateY(-20px) rotate(0deg)',
       'z-index': 1000,
     },
     selected: {
-      boxShadow: '0px 2px 5px rgba(220,220,220,0.1)',
-      transform: 'scale(1.1) translateX(0px) translateY(-20px) rotate(0deg)',
+      transform: transform(),
+      // transform: 'scale(1.1) translateX(0px) translateY(-20px) rotate(0deg)',
+      'z-index': 1000,
+    },
+    choosen: {
+      transform: transform(),
+      // transform: 'scale(1.5) translateX(0px) translateY(-60px) rotate(0deg)',
+      'z-index': 1000,
+    },
+    hidden: {
+      transform: transform(),
+      // transform: 'scale(1) translateX(150px) translateY(-250px) rotate(0deg)',
       'z-index': 1000,
     },
   }),
