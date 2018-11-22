@@ -6,7 +6,7 @@ const emitter = new EventEmitter();
 
 const socketUrl = `ws://${window.location.hostname}:3210`;
 
-export default function() {
+export default function(channel, name) {
   const socket = new SimpleWebsocket(socketUrl);
   let rtc;
   socket.on('close', function() {
@@ -18,6 +18,10 @@ export default function() {
   });
 
   socket.on('connect', function() {
+    console.log('WS connected');
+
+    socket.send({ type: 'host', channel, name });
+
     rtc = new SimplePeer({ initiator: true, trickle: false });
     rtc.on('signal', function(data) {
       socket.send(JSON.stringify(data));

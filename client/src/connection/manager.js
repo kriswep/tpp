@@ -42,11 +42,11 @@ export default {
     emitter.off('status', cb);
   },
 
-  host: function() {
-    setupConnection(HostConnection());
+  host: function(channel, name) {
+    setupConnection(HostConnection(channel, name));
   },
 
-  join: function() {
-    setupConnection(ClientConnection());
+  join: function(channel, name) {
+    setupConnection(ClientConnection(channel, name));
   },
 };

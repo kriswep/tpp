@@ -7,7 +7,7 @@ let peers = [];
 
 const socketUrl = `ws://${window.location.hostname}:3210`;
 
-export default function() {
+export default function(name, channel) {
   const socket = new SimpleWebsocket(socketUrl);
   socket.on('close', function() {
     console.log('Socket closed');
@@ -17,11 +17,13 @@ export default function() {
     console.log(err);
   });
   socket.on('connect', function() {
-    console.log('Connected');
+    console.log('WS connected');
+
+    socket.send({ type: 'host', channel, name });
   });
   socket.on('data', function(data) {
     data = JSON.parse(data);
-    var rtc = new SimplePeer({ initiator: false, trickle: false });
+    const rtc = new SimplePeer({ initiator: false, trickle: false });
 
     rtc.signal(data);
     rtc.on('signal', function(data) {
