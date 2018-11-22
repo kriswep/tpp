@@ -20,7 +20,7 @@ export default function(channel, name) {
   socket.on('connect', function() {
     console.log('WS connected');
 
-    socket.send({ type: 'host', channel, name });
+    socket.send(JSON.stringify({ type: 'client', channel, name }));
 
     rtc = new SimplePeer({ initiator: true, trickle: false });
     rtc.on('signal', function(data) {
@@ -29,6 +29,7 @@ export default function(channel, name) {
 
     socket.on('data', function(data) {
       data = JSON.parse(data);
+      if (data.type !== 'answer') return;
       rtc.signal(data);
     });
 

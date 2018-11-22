@@ -19,10 +19,11 @@ export default function(name, channel) {
   socket.on('connect', function() {
     console.log('WS connected');
 
-    socket.send({ type: 'host', channel, name });
+    socket.send(JSON.stringify({ type: 'host', channel, name }));
   });
   socket.on('data', function(data) {
     data = JSON.parse(data);
+    if (data.type !== 'offer') return;
     const rtc = new SimplePeer({ initiator: false, trickle: false });
 
     rtc.signal(data);
