@@ -7,7 +7,7 @@ let peers = [];
 
 const socketUrl = `ws://${window.location.hostname}:3210`;
 
-export default function(name, channel) {
+export default function(channel, name) {
   const socket = new SimpleWebsocket(socketUrl);
   socket.on('close', function() {
     console.log('Socket closed');
