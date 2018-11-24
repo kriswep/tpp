@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 
 import Text from '../components/Text';
 import Card from './Card';
+// import MessageForm from '../Chat/MessageForm';
+import MessageStore from '../Chat/MessageStore';
+import ConnectionManager from '../connection/manager';
+import ConnectionForm from '../Chat/ConnectionForm';
 
 // const Table = styled.div`
 //   align-items: center;
@@ -24,7 +28,34 @@ class index extends Component {
       { idx: 10, value: 40, selected: false, choosen: false },
       { idx: 11, value: 100, selected: false, choosen: false },
     ],
+    messages: MessageStore.getMessages(),
+    connected: ConnectionManager.isConnected(),
   };
+
+  componentDidMount() {
+    MessageStore.subscribe(this.updateMessages);
+    ConnectionManager.onStatusChange(this.updateConnection);
+    ConnectionManager.onMessage(MessageStore.newMessage);
+  }
+
+  componentWillUnmount() {
+    MessageStore.unsubscribe(this.updateMessages);
+    ConnectionManager.offStatusChange(this.updateConnection);
+    ConnectionManager.offMessage(MessageStore.newMessage);
+  }
+
+  updateMessages = () => {
+    this.setState({
+      messages: MessageStore.getMessages(),
+    });
+  };
+
+  updateConnection = () => {
+    this.setState({
+      connected: ConnectionManager.isConnected(),
+    });
+  };
+
   select = e => {
     const cards = this.state.cards.map(current => {
       const newCard = { ...current };
@@ -50,38 +81,51 @@ class index extends Component {
     })[0];
     return (
       <div>
-        {this.state.cards.map(card => {
-          let pose = 'init';
+        {!this.state.connected ? (
+          <>
+            <Text>Please connect!</Text>
+            <ConnectionForm
+              connected={this.state.connected}
+              onHost={ConnectionManager.host}
+              onJoin={ConnectionManager.join}
+            />
+          </>
+        ) : (
+          <>
+            {this.state.cards.map(card => {
+              let pose = 'init';
 
-          if (card.selected) {
-            pose = 'selected';
-          }
-          if (choosenCard) {
-            pose = 'hidden';
-            // every card is hidden, except the choosen one
-            if (card.idx === choosenCard.idx) {
-              pose = 'choosen';
-            }
-          }
+              if (card.selected) {
+                pose = 'selected';
+              }
+              if (choosenCard) {
+                pose = 'hidden';
+                // every card is hidden, except the choosen one
+                if (card.idx === choosenCard.idx) {
+                  pose = 'choosen';
+                }
+              }
 
-          return (
-            <Card
-              data-idx={card.idx}
-              key={card.idx}
-              idx={card.idx}
-              pose={pose}
-              // pose={card.selected ? 'selected' : 'init'}
-              // endPose={
-              //   pose === 'choosen' || pose === 'selected' || pose === 'hidden'
-              // }
-              setPose={pose}
-              onTouchStart={this.select}
-              onMouseDown={this.select}
-            >
-              <Text invert>{card.value}</Text>
-            </Card>
-          );
-        })}
+              return (
+                <Card
+                  data-idx={card.idx}
+                  key={card.idx}
+                  idx={card.idx}
+                  pose={pose}
+                  // pose={card.selected ? 'selected' : 'init'}
+                  // endPose={
+                  //   pose === 'choosen' || pose === 'selected' || pose === 'hidden'
+                  // }
+                  setPose={pose}
+                  onTouchStart={this.select}
+                  onMouseDown={this.select}
+                >
+                  <Text invert>{card.value}</Text>
+                </Card>
+              );
+            })}
+          </>
+        )}
       </div>
     );
   }
