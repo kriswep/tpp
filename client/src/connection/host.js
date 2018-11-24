@@ -40,13 +40,15 @@ export default function(channel, name) {
       emitter.emit('message', msg);
 
       //as host, we need to broadcast the data to the other peers
-      peers.forEach(function(p) {
-        if (p === rtc) {
-          return;
-        }
+      peers
+        .filter(p => p.connected)
+        .forEach(function(p) {
+          if (p === rtc) {
+            return;
+          }
 
-        p.send(msg);
-      });
+          p.send(msg);
+        });
     });
   });
 
@@ -58,9 +60,11 @@ export default function(channel, name) {
     },
 
     send: function(message) {
-      peers.forEach(function(p) {
-        p.send(message);
-      });
+      peers
+        .filter(p => p.connected)
+        .forEach(function(p) {
+          p.send(message);
+        });
     },
 
     onMessage: function(callback) {
