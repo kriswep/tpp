@@ -1,18 +1,11 @@
 import React, { Component } from 'react';
-// import styled from 'styled-components';
 
 import Text from '../components/Text';
 import Card from './Card';
-// import MessageForm from '../Chat/MessageForm';
 import MessageStore from '../Chat/MessageStore';
 import ConnectionManager from '../connection/manager';
 import ConnectionForm from '../Chat/ConnectionForm';
 
-// const Table = styled.div`
-//   align-items: center;
-//   justify-content: center;
-//   display: flex;
-// `;
 class index extends Component {
   state = {
     cards: [

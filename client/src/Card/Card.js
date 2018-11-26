@@ -88,7 +88,6 @@ const Card = styled(
     hoverable: true,
     pressable: true,
     init: {
-      // boxShadow: '0px 0px 0px rgba(220,220,220,0)',
       transform: transform(1),
       'z-index': ({ idx }) => idx,
     },
@@ -99,7 +98,6 @@ const Card = styled(
     },
     press: {
       transform: transform(1.1),
-      // transform: 'scale(1.1) translateX(0px) translateY(-20px) rotate(0deg)',
       // transform: props =>
       //   props.endPose
       //     ? ''
@@ -108,12 +106,10 @@ const Card = styled(
     },
     selected: {
       transform: transform(),
-      // transform: 'scale(1.1) translateX(0px) translateY(-20px) rotate(0deg)',
       'z-index': 1000,
     },
     choosen: {
       transform: transform(),
-      // transform: 'scale(1.5) translateX(0px) translateY(-60px) rotate(0deg)',
       'z-index': 1000,
     },
     hidden: {
