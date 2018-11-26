@@ -6,6 +6,8 @@ import MessageStore from '../Chat/MessageStore';
 import ConnectionManager from '../connection/manager';
 import ConnectionForm from '../Chat/ConnectionForm';
 
+import Manager from '../Manager';
+
 class index extends Component {
   state = {
     cards: [
@@ -85,6 +87,7 @@ class index extends Component {
           </>
         ) : (
           <>
+            <Manager />
             {this.state.cards.map(card => {
               let pose = 'init';
 
