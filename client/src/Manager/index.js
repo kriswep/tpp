@@ -22,12 +22,12 @@ class Manager extends React.Component {
 
   next = () => {
     const { send } = this.service;
-    send('TIMER');
+    send('TIME');
   };
 
   render() {
     const { current } = this.state;
-    return <>{this.props.children({ current, next: this.next })}</>;
+    return <>{this.props.children({ gameState: current, next: this.next })}</>;
   }
 }
 
