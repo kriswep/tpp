@@ -71,7 +71,8 @@ class index extends Component {
     });
   };
   render() {
-    const choosenCard = this.state.cards.filter(card => {
+    const { cards } = this.state;
+    const choosenCard = cards.filter(card => {
       return card.choosen;
     })[0];
     return (
@@ -87,39 +88,42 @@ class index extends Component {
           </>
         ) : (
           <>
-            <Manager />
-            {this.state.cards.map(card => {
-              let pose = 'init';
+            <Manager>
+              {({ gameState, next }) => {
+                return cards.map(card => {
+                  let pose = 'init';
 
-              if (card.selected) {
-                pose = 'selected';
-              }
-              if (choosenCard) {
-                pose = 'hidden';
-                // every card is hidden, except the choosen one
-                if (card.idx === choosenCard.idx) {
-                  pose = 'choosen';
-                }
-              }
+                  if (card.selected) {
+                    pose = 'selected';
+                  }
+                  if (choosenCard) {
+                    pose = 'hidden';
+                    // every card is hidden, except the choosen one
+                    if (card.idx === choosenCard.idx) {
+                      pose = 'choosen';
+                    }
+                  }
 
-              return (
-                <Card
-                  data-idx={card.idx}
-                  key={card.idx}
-                  idx={card.idx}
-                  pose={pose}
-                  // pose={card.selected ? 'selected' : 'init'}
-                  // endPose={
-                  //   pose === 'choosen' || pose === 'selected' || pose === 'hidden'
-                  // }
-                  setPose={pose}
-                  onTouchStart={this.select}
-                  onMouseDown={this.select}
-                >
-                  <Text invert>{card.value}</Text>
-                </Card>
-              );
-            })}
+                  return (
+                    <Card
+                      data-idx={card.idx}
+                      key={card.idx}
+                      idx={card.idx}
+                      pose={pose}
+                      // pose={card.selected ? 'selected' : 'init'}
+                      // endPose={
+                      //   pose === 'choosen' || pose === 'selected' || pose === 'hidden'
+                      // }
+                      setPose={pose}
+                      onTouchStart={this.select}
+                      onMouseDown={this.select}
+                    >
+                      <Text invert>{card.value}</Text>
+                    </Card>
+                  );
+                });
+              }}
+            </Manager>
           </>
         )}
       </div>

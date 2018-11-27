@@ -1,7 +1,6 @@
 import React from 'react';
 import { interpret } from 'xstate/lib/interpreter';
 
-import Button from '../components/Button';
 import roundMachine from './round.machine';
 
 class Manager extends React.Component {
@@ -21,10 +20,14 @@ class Manager extends React.Component {
     this.service.stop();
   }
 
+  next = () => {
+    const { send } = this.service;
+    send('TIMER');
+  };
+
   render() {
     const { current } = this.state;
-    const { send } = this.service;
-    return <Button onClick={() => send('TIME')}>{current.value}</Button>;
+    return <>{this.props.children({ current, next: this.next })}</>;
   }
 }
 
