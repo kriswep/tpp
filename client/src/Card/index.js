@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 
 import Text from '../components/Text';
 import Card from './Card';
-import MessageStore from '../Chat/MessageStore';
-import ConnectionManager from '../connection/manager';
-import ConnectionForm from '../Chat/ConnectionForm';
-
-import Manager from '../Manager';
+import Connection from '../Manager/Connection';
+import GameState from '../Manager/GameState';
 import Button from '../components/Button';
 
 class index extends Component {
@@ -24,32 +21,6 @@ class index extends Component {
       { idx: 10, value: 40, selected: false, choosen: false },
       { idx: 11, value: 100, selected: false, choosen: false },
     ],
-    messages: MessageStore.getMessages(),
-    connected: ConnectionManager.isConnected(),
-  };
-
-  componentDidMount() {
-    MessageStore.subscribe(this.updateMessages);
-    ConnectionManager.onStatusChange(this.updateConnection);
-    ConnectionManager.onMessage(MessageStore.newMessage);
-  }
-
-  componentWillUnmount() {
-    MessageStore.unsubscribe(this.updateMessages);
-    ConnectionManager.offStatusChange(this.updateConnection);
-    ConnectionManager.offMessage(MessageStore.newMessage);
-  }
-
-  updateMessages = () => {
-    this.setState({
-      messages: MessageStore.getMessages(),
-    });
-  };
-
-  updateConnection = () => {
-    this.setState({
-      connected: ConnectionManager.isConnected(),
-    });
   };
 
   select = e => {
@@ -71,6 +42,7 @@ class index extends Component {
       cards,
     });
   };
+
   render() {
     const { cards } = this.state;
     const choosenCard = cards.filter(card => {
@@ -78,60 +50,52 @@ class index extends Component {
     })[0];
     return (
       <div>
-        {!this.state.connected ? (
-          <>
-            <Text>Please connect!</Text>
-            <ConnectionForm
-              connected={this.state.connected}
-              onHost={ConnectionManager.host}
-              onJoin={ConnectionManager.join}
-            />
-          </>
-        ) : (
-          <>
-            <Manager>
-              {({ gameState, next }) => {
-                return (
-                  <>
-                    <Button onClick={next}>{gameState.value}</Button>
-                    {cards.map(card => {
-                      let pose = 'init';
-
-                      if (card.selected) {
-                        pose = 'selected';
-                      }
-                      if (choosenCard) {
-                        pose = 'hidden';
-                        // every card is hidden, except the choosen one
-                        if (card.idx === choosenCard.idx) {
-                          pose = 'choosen';
+        <Connection>
+          {({ connected, messages, send }) => {
+            if (!connected) return null;
+            return (
+              <GameState>
+                {({ gameState, next }) => {
+                  return (
+                    <>
+                      <Button onClick={next}>{gameState.value}</Button>
+                      {cards.map(card => {
+                        let pose = 'init';
+                        if (card.selected) {
+                          pose = 'selected';
                         }
-                      }
-
-                      return (
-                        <Card
-                          data-idx={card.idx}
-                          key={card.idx}
-                          idx={card.idx}
-                          pose={pose}
-                          // pose={card.selected ? 'selected' : 'init'}
-                          // endPose={
-                          //   pose === 'choosen' || pose === 'selected' || pose === 'hidden'
-                          // }
-                          setPose={pose}
-                          onTouchStart={this.select}
-                          onMouseDown={this.select}
-                        >
-                          <Text invert>{card.value}</Text>
-                        </Card>
-                      );
-                    })}
-                  </>
-                );
-              }}
-            </Manager>
-          </>
-        )}
+                        if (choosenCard) {
+                          pose = 'hidden';
+                          // every card is hidden, except the choosen one
+                          if (card.idx === choosenCard.idx) {
+                            pose = 'choosen';
+                          }
+                        }
+                        return (
+                          <Card
+                            data-idx={card.idx}
+                            key={card.idx}
+                            idx={card.idx}
+                            pose={pose}
+                            // pose={card.selected ? 'selected' : 'init'}
+                            // endPose={
+                            //   pose === 'choosen' || pose === 'selected' || pose === 'hidden'
+                            // }
+                            setPose={pose}
+                            onTouchStart={this.select}
+                            onMouseDown={this.select}
+                          >
+                            <Text invert>{card.value}</Text>
+                          </Card>
+                        );
+                      })}
+                    </>
+                  );
+                }}
+              </GameState>
+            );
+          }}
+        </Connection>
       </div>
     );
   }

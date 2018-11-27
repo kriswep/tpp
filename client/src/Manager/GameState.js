@@ -3,7 +3,7 @@ import { interpret } from 'xstate/lib/interpreter';
 
 import roundMachine from './round.machine';
 
-class Manager extends React.Component {
+class GameState extends React.Component {
   state = {
     current: roundMachine.initialState,
   };
@@ -27,8 +27,8 @@ class Manager extends React.Component {
 
   render() {
     const { current } = this.state;
-    return <>{this.props.children({ gameState: current, next: this.next })}</>;
+    return this.props.children({ gameState: current, next: this.next });
   }
 }
 
-export default Manager;
+export default GameState;
