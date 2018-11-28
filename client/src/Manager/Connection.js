@@ -42,6 +42,7 @@ class Connection extends Component {
 
   render() {
     const { connected, messages } = this.state;
+    const isHost = ConnectionManager.isHost();
     return !connected ? (
       <>
         <Text>Please connect!</Text>
@@ -52,7 +53,7 @@ class Connection extends Component {
         />
       </>
     ) : (
-      this.props.children({ connected, messages, send: this.onSend })
+      this.props.children({ connected, messages, send: this.onSend, isHost })
     );
   }
 }
