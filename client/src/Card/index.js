@@ -54,7 +54,7 @@ class index extends Component {
           {({ connected, messages, send, isHost }) => {
             if (!connected) return null;
             return (
-              <GameState>
+              <GameState distribute={isHost ? send : null}>
                 {({ gameState, next }) => {
                   return (
                     <>
