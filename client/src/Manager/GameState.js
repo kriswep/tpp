@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import MessageStore from '../connection/MessageStore';
 import { interpret } from 'xstate/lib/interpreter';
 
@@ -58,5 +58,39 @@ class GameState extends React.Component {
     return this.props.children({ gameState: current, next: this.next });
   }
 }
+
+function useMachine(machine) {
+  return distribute => {
+    const [current, setCurrent] = useState(machine.initialState);
+    const service = useMemo(
+      () =>
+        interpret(machine)
+          .onTransition(state => {
+            console.log('STATE:', state);
+            if (distribute) {
+              distribute(JSON.stringify({ type: 'gamestate', current }));
+            }
+            setCurrent(state);
+          })
+          .onEvent(e => console.log('EVENT:', e))
+          .start(),
+      [machine],
+    );
+
+    useEffect(() => {
+      return () => service.stop();
+    }, []);
+
+    const next = () => {
+      const { send } = service;
+      send('TIME');
+    };
+
+    return { gameState: current, next };
+  };
+}
+
+export const useGameState = useMachine(roundMachine());
+// export { useMachine as useGameState };
 
 export default GameState;
