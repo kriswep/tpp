@@ -2,8 +2,10 @@ import React, { Component, useState } from 'react';
 
 import Text from '../components/Text';
 import Card from './Card';
-import Connection from '../Manager/Connection';
+import Connection, { useConnection } from '../Manager/Connection';
 import GameState, { useGameState } from '../Manager/GameState';
+import ConnectionForm from '../connection/ConnectionForm';
+import ConnectionManager from '../connection/manager';
 import Button from '../components/Button';
 
 class index extends Component {
@@ -121,6 +123,9 @@ export const Index = () => {
     { idx: 11, value: 100, selected: false, choosen: false },
   ]);
 
+  const { connected, messages, send, isHost } = useConnection();
+  const { gameState, next } = useGameState(isHost ? send : null);
+
   const select = e => {
     const newCards = cards.map(current => {
       const newCard = { ...current };
@@ -142,54 +147,59 @@ export const Index = () => {
   const choosenCard = cards.filter(card => {
     return card.choosen;
   })[0];
-  const { gameState, next } = useGameState();
+
+  if (!connected)
+    return (
+      <>
+        <Text>Please connect!</Text>
+        <ConnectionForm
+          connected={connected}
+          onHost={ConnectionManager.host}
+          onJoin={ConnectionManager.join}
+        />
+      </>
+    );
   return (
-    <div>
-      <Connection>
-        {({ connected, messages, send, isHost }) => {
-          if (!connected) return null;
-          // const { gameState, next } = useGameState(isHost ? send : null);
+    <>
+      {isHost && <Button onClick={next}>{gameState.value}</Button>}
+      {!isHost &&
+        cards.map(card => {
+          let pose = 'init';
+          if (card.selected) {
+            pose = 'selected';
+          }
+          if (choosenCard) {
+            pose = 'hidden';
+            // every card is hidden, except the choosen one
+            if (card.idx === choosenCard.idx) {
+              pose = 'choosen';
+            }
+          }
           return (
-            <>
-              {isHost && <Button onClick={next}>{gameState.value}</Button>}
-              {!isHost &&
-                cards.map(card => {
-                  let pose = 'init';
-                  if (card.selected) {
-                    pose = 'selected';
-                  }
-                  if (choosenCard) {
-                    pose = 'hidden';
-                    // every card is hidden, except the choosen one
-                    if (card.idx === choosenCard.idx) {
-                      pose = 'choosen';
-                    }
-                  }
-                  return (
-                    <Card
-                      data-idx={card.idx}
-                      key={card.idx}
-                      idx={card.idx}
-                      pose={pose}
-                      // pose={card.selected ? 'selected' : 'init'}
-                      // endPose={
-                      //   pose === 'choosen' || pose === 'selected' || pose === 'hidden'
-                      // }
-                      setPose={pose}
-                      onTouchStart={select}
-                      onMouseDown={select}
-                    >
-                      <Text invert>{card.value}</Text>
-                    </Card>
-                  );
-                })}
-            </>
+            <Card
+              data-idx={card.idx}
+              key={card.idx}
+              idx={card.idx}
+              pose={pose}
+              // pose={card.selected ? 'selected' : 'init'}
+              // endPose={
+              //   pose === 'choosen' || pose === 'selected' || pose === 'hidden'
+              // }
+              setPose={pose}
+              onTouchStart={select}
+              onMouseDown={select}
+            >
+              <Text invert>{card.value}</Text>
+            </Card>
           );
-        }}
-      </Connection>
-    </div>
+        })}
+    </>
   );
+  //   }}
+  // </Connection>
+  // </div>
+  // );
   // }
 };
 
-export default index;
+export default Index;
