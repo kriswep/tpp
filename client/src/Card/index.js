@@ -1,9 +1,9 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 
 import Text from '../components/Text';
 import Card from './Card';
 import useConnection from '../Manager/Connection';
-import GameState, { useGameState } from '../Manager/GameState';
+import useGameState from '../Manager/GameState';
 import Connect from '../connection/Connect';
 import Button from '../components/Button';
 
