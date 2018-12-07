@@ -1,39 +1,28 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import Input from '../components/Input';
 import Button from '../components/Button';
 
-class MessageForm extends Component {
-  state = {
-    input: '',
-  };
+const MessageForm = props => {
+  const [input, setInput] = useState('');
 
-  submit = e => {
+  const submit = e => {
     e.preventDefault();
 
-    this.props.onSend(this.state.input);
-
-    this.setState({
-      input: '',
-    });
+    props.onSend(input);
+    setInput('');
   };
 
-  updateInput = e => {
-    this.setState({ input: e.target.value });
+  const updateInput = e => {
+    setInput(e.target.value);
   };
 
-  render() {
-    return (
-      <form onSubmit={this.submit}>
-        <Input
-          value={this.state.input}
-          onChange={this.updateInput}
-          type="text"
-        />
-        <Button as="input" type="submit" value="Send" />
-      </form>
-    );
-  }
-}
+  return (
+    <form onSubmit={submit}>
+      <Input value={input} onChange={updateInput} type="text" />
+      <Button as="input" type="submit" value="Send" />
+    </form>
+  );
+};
 
 export default MessageForm;
