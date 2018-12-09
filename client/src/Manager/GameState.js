@@ -5,6 +5,7 @@ import roundMachine from './round.machine';
 
 function useMachine(machine) {
   return distribute => {
+    console.log(distribute);
     const [current, setCurrent] = useState(machine.initialState);
     const service = useMemo(
       () =>
@@ -12,13 +13,13 @@ function useMachine(machine) {
           .onTransition(state => {
             console.log('STATE:', state);
             if (distribute) {
-              distribute(JSON.stringify({ type: 'gamestate', current }));
+              distribute(JSON.stringify({ type: 'gamestate', state }));
             }
             setCurrent(state);
           })
           .onEvent(e => console.log('EVENT:', e))
           .start(),
-      [machine],
+      [typeof distribute],
     );
 
     useEffect(() => {
