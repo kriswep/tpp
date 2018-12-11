@@ -8,6 +8,8 @@ const Text = styled.p`
   font-size: ${({ size = 'normal', theme }) => {
     return theme[size];
   }};
+  margin: 0;
+  padding: 0;
 `;
 
 export default Text;

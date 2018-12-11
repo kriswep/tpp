@@ -11,7 +11,7 @@ const Listen = ({ gameState, next }) => {
     <ScreenCenterer>
       {gameState.matches('intro') && <Explain noCenter={true} />}
       {next && (
-        <Button align="end" size="big" onClick={next}>
+        <Button align="flex-end" size="big" onClick={next}>
           Next
         </Button>
       )}
