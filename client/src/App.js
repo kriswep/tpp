@@ -10,6 +10,10 @@ const theme = {
   light: '#fcfcfc',
   mode: 'dark',
   fontUrl: `${process.env.PUBLIC_URL}/radnikanext-medium-webfont.woff2`,
+  small: '0.8rem',
+  normal: '1.5rem',
+  big: '3rem',
+  huge: '5rem',
 };
 
 const GlobalStyle = createGlobalStyle`
@@ -29,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     padding: 0;
     margin: 0;
-    font-size: 1.5rem;
+    font-size: ${props => theme.normal};;
     line-height: 2;
     font-family: 'radnika_next', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',

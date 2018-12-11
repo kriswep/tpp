@@ -5,6 +5,9 @@ const Text = styled.p`
     if (invert) return theme.mode === 'dark' ? theme.dark : theme.light;
     return theme.mode === 'dark' ? theme.light : theme.dark;
   }};
+  font-size: ${({ size = 'normal', theme }) => {
+    return theme[size];
+  }};
 `;
 
 export default Text;

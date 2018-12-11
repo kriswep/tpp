@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-import Text from '../components/Text';
+import Master from './Master';
 import Card from './Card';
+import Text from '../components/Text';
 import useConnection from '../Manager/Connection';
 import useGameState from '../Manager/GameState';
 import Connect from '../connection/Connect';
@@ -51,7 +52,7 @@ export const Index = () => {
 
   return (
     <>
-      {isHost && <Button onClick={next}>{gameState.value}</Button>}
+      {isHost && <Master gameState={gameState} next={next} />}
       {!isHost &&
         cards.map(card => {
           let pose = 'init';
