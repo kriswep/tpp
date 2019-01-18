@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 const Text = styled.input`
   color: ${({ theme }) => (theme.mode === 'dark' ? theme.light : theme.dark)};

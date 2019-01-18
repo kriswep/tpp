@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from 'react';
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { createGlobalStyle, ThemeProvider } from 'styled-components/macro';
 
 import ErrorBoundary from './components/ErrorBoundary';
 import Nav from './components/Nav';
