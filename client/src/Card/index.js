@@ -6,7 +6,7 @@ import Text from '../components/Text';
 import useConnection from '../Manager/Connection';
 import useGameState from '../Manager/GameState';
 import Connect from '../connection/Connect';
-import Button from '../components/Button';
+// import Button from '../components/Button';
 
 export const Index = () => {
   const [cards, setCards] = useState([
@@ -23,7 +23,7 @@ export const Index = () => {
     { idx: 11, value: 100, selected: false, choosen: false },
   ]);
 
-  const { connected, messages, send, isHost } = useConnection();
+  const { connected, send, isHost } = useConnection();
   const { gameState, next } = useGameState(isHost ? send : null);
 
   const select = e => {
