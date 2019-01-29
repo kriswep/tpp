@@ -5,7 +5,6 @@ import roundMachine from './round.machine';
 
 function useMachine(machine) {
   return distribute => {
-    console.log(distribute);
     const [current, setCurrent] = useState(machine.initialState);
     const service = useMemo(
       () =>
@@ -17,7 +16,7 @@ function useMachine(machine) {
             }
             setCurrent(state);
           })
-          .onEvent(e => console.log('EVENT:', e))
+          // .onEvent(e => console.log('EVENT:', e))
           .start(),
       [typeof distribute],
     );
