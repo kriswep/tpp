@@ -9,7 +9,6 @@ import Text from '../components/Text';
 
 const Listen = ({ gameState }) => {
   if (!gameState) return null;
-  console.log(gameState);
   const [cards, setCards] = useState([
     { idx: 1, value: 0, selected: false, choosen: false },
     { idx: 2, value: 0.5, selected: false, choosen: false },
@@ -48,36 +47,47 @@ const Listen = ({ gameState }) => {
 
   return (
     <>
-      {cards.map(card => {
-        let pose = 'init';
-        if (card.selected) {
-          pose = 'selected';
-        }
-        if (choosenCard) {
-          pose = 'hidden';
-          // every card is hidden, except the choosen one
-          if (card.idx === choosenCard.idx) {
-            pose = 'choosen';
+      {gameState.matches('intro') && (
+        <ScreenCenterer>
+          <Explain noCenter={true} />
+        </ScreenCenterer>
+      )}
+      {gameState.matches('play') &&
+        cards.map(card => {
+          let pose = 'init';
+          if (card.selected) {
+            pose = 'selected';
           }
-        }
-        return (
-          <Card
-            data-idx={card.idx}
-            key={card.idx}
-            idx={card.idx}
-            pose={pose}
-            // pose={card.selected ? 'selected' : 'init'}
-            // endPose={
-            //   pose === 'choosen' || pose === 'selected' || pose === 'hidden'
-            // }
-            setPose={pose}
-            onTouchStart={select}
-            onMouseDown={select}
-          >
-            <Text invert>{card.value}</Text>
-          </Card>
-        );
-      })}
+          if (choosenCard) {
+            pose = 'hidden';
+            // every card is hidden, except the choosen one
+            if (card.idx === choosenCard.idx) {
+              pose = 'choosen';
+            }
+          }
+          return (
+            <Card
+              data-idx={card.idx}
+              key={card.idx}
+              idx={card.idx}
+              pose={pose}
+              // pose={card.selected ? 'selected' : 'init'}
+              // endPose={
+              //   pose === 'choosen' || pose === 'selected' || pose === 'hidden'
+              // }
+              setPose={pose}
+              onTouchStart={select}
+              onMouseDown={select}
+            >
+              <Text invert>{card.value}</Text>
+            </Card>
+          );
+        })}
+      {gameState.matches('result') && (
+        <ScreenCenterer>
+          <Result noCenter={true} />
+        </ScreenCenterer>
+      )}
     </>
   );
 };
