@@ -34,7 +34,7 @@ export const Index = () => {
   return (
     <>
       {isHost && <Master gameState={gameState} next={next} />}
-      {!isHost && <Estimator gameState={gameState} />}
+      {!isHost && <Estimator gameState={gameState} send={send}/>}
     </>
   );
 };

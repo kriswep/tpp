@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Card from './Card';
 import Text from '../components/Text';
 
-const Cards = () => {
+const Cards = ({ send }) => {
   const [cards, setCards] = useState([
     { idx: 1, value: 0, selected: false, choosen: false },
     { idx: 2, value: 0.5, selected: false, choosen: false },
@@ -24,6 +24,8 @@ const Cards = () => {
       if (current.idx === parseInt(e.target.dataset.idx)) {
         if (newCard.selected) {
           newCard.choosen = true;
+          // send choosen card to the world (aka to host)
+          send(JSON.stringify({ type: 'card', card: newCard }));
         } else {
           newCard.selected = true;
         }
@@ -60,10 +62,6 @@ const Cards = () => {
             key={card.idx}
             idx={card.idx}
             pose={pose}
-            // pose={card.selected ? 'selected' : 'init'}
-            // endPose={
-            //   pose === 'choosen' || pose === 'selected' || pose === 'hidden'
-            // }
             setPose={pose}
             onTouchStart={select}
             onMouseDown={select}

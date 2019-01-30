@@ -5,7 +5,7 @@ import Explain from '../components/Explain';
 import Result from '../components/Result';
 import Cards from './Cards';
 
-const Estimator = ({ gameState }) => {
+const Estimator = ({ gameState, send }) => {
   if (!gameState) return null;
 
   return (
@@ -15,7 +15,7 @@ const Estimator = ({ gameState }) => {
           <Explain noCenter={true} />
         </ScreenCenterer>
       )}
-      {gameState.matches('play') && <Cards />}
+      {gameState.matches('play') && <Cards send={send} />}
       {gameState.matches('result') && (
         <ScreenCenterer>
           <Result noCenter={true} />
