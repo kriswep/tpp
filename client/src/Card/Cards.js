@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import Card from './Card';
 import Text from '../components/Text';
 
-const Cards = ({ send }) => {
+const Cards = ({ id, send }) => {
+  console.log('Cards:', id);
   const [cards, setCards] = useState([
     { idx: 1, value: 0, selected: false, choosen: false },
     { idx: 2, value: 0.5, selected: false, choosen: false },
@@ -25,7 +26,7 @@ const Cards = ({ send }) => {
         if (newCard.selected) {
           newCard.choosen = true;
           // send choosen card to the world (aka to host)
-          send(JSON.stringify({ type: 'card', card: newCard }));
+          send(JSON.stringify({ type: 'card', card: newCard, id }));
         } else {
           newCard.selected = true;
         }

@@ -7,7 +7,7 @@ import useGameState from '../Manager/GameState';
 import Connect from '../connection/Connect';
 
 export const Index = () => {
-  const { connected, send, messages, isHost } = useConnection();
+  const { id, connected, send, messages, isHost } = useConnection();
   const { gameState, next } = useGameState(isHost ? send : null);
 
   if (!connected) return <Connect connected={connected} />;
@@ -33,8 +33,8 @@ export const Index = () => {
 
   return (
     <>
-      {isHost && <Master gameState={gameState} next={next} />}
-      {!isHost && <Estimator gameState={gameState} send={send}/>}
+      {isHost && <Master gameState={gameState} next={next} id={id} />}
+      {!isHost && <Estimator gameState={gameState} send={send} id={id} />}
     </>
   );
 };

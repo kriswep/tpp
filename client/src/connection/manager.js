@@ -24,6 +24,10 @@ function setupConnection(conn) {
 }
 
 export default {
+  getId: function() {
+    return connection && connection.id;
+  },
+
   isHost: function() {
     return connectionType === CONNECTION_TYPE.HOST;
   },

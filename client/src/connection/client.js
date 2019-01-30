@@ -47,6 +47,11 @@ export default function(channel, name) {
   });
 
   return {
+    id: {
+      channel,
+      name,
+    },
+
     onReady: function(callback) {
       emitter.on('connected', callback);
     },

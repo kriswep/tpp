@@ -53,6 +53,11 @@ export default function(channel, name) {
   });
 
   return {
+    id: {
+      channel,
+      name,
+    },
+
     onReady: function(callback) {
       //the host is always "ready" although it may
       //not have any clients

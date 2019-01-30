@@ -27,6 +27,7 @@ const useConnection = () => {
     MessageStore.newMessage(newMessage);
   };
   return {
+    id: ConnectionManager.getId(),
     connected,
     messages,
     send: onSend,
