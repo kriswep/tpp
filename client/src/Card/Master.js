@@ -1,4 +1,5 @@
 import React from 'react';
+import posed, { PoseGroup } from 'react-pose';
 
 import ScreenCenterer from '../components/ScreenCenterer';
 import Button from '../components/Button';
@@ -6,14 +7,32 @@ import Explain from '../components/Explain';
 import Wait from '../components/Wait';
 import Result from '../components/Result';
 
+const Poser = posed.div({
+  enter: { x: 0, opacity: 1 },
+  exit: { x: 50, opacity: 0 },
+});
 const Listen = ({ gameState, next }) => {
   if (!gameState) return null;
 
   return (
     <ScreenCenterer>
-      {gameState.matches('intro') && <Explain noCenter={true} />}
-      {gameState.matches('play') && <Wait noCenter={true} />}
-      {gameState.matches('result') && <Result noCenter={true} />}
+      <PoseGroup>
+        {gameState.matches('intro') && (
+          <Poser key={gameState.value}>
+            <Explain noCenter={true} />
+          </Poser>
+        )}
+        {gameState.matches('play') && (
+          <Poser key={gameState.value}>
+            <Wait noCenter={true} />
+          </Poser>
+        )}
+        {gameState.matches('result') && (
+          <Poser key={gameState.value}>
+            <Result noCenter={true} />
+          </Poser>
+        )}
+      </PoseGroup>
       {next && (
         <Button align="flex-end" size="big" onClick={next}>
           {gameState.matches('intro') && 'start'}
