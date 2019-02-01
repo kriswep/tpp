@@ -7,7 +7,7 @@ import Cards from './Cards';
 
 const Estimator = ({ id, gameState, send }) => {
   if (!gameState) return null;
-  console.log('Estimator:', id);
+
   return (
     <>
       {gameState.matches('intro') && (

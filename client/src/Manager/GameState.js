@@ -10,7 +10,6 @@ function useMachine(machine) {
       () =>
         interpret(machine)
           .onTransition(state => {
-            console.log('STATE:', state);
             if (distribute) {
               distribute(JSON.stringify({ type: 'gamestate', state }));
             }

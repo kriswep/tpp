@@ -4,7 +4,6 @@ import Card from './Card';
 import Text from '../components/Text';
 
 const Cards = ({ id, send }) => {
-  console.log('Cards:', id);
   const [cards, setCards] = useState([
     { idx: 1, value: 0, selected: false, choosen: false },
     { idx: 2, value: 0.5, selected: false, choosen: false },
