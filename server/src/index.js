@@ -71,7 +71,29 @@ server.on('connection', (socket, req) => {
 
     return error(socket, 'invalid message');
   });
+  socket.on('close', (code, reason) => {
+    const ip =
+      (req &&
+        (req.headers['x-forwarded-for'] &&
+          req.headers['x-forwarded-for'].split(/\s*,\s*/)[0])) ||
+      (req.connection && req.connection.remoteAddress);
+    console.log(
+      `Socket ${ip}  in channel ${
+        socket.channel
+      } closed with ${code}. Reason: ${reason}`,
+    );
+    closeChannelWhenEmpty(socket.channel);
+  });
 });
+
+const closeChannelWhenEmpty = channel => {
+  activeConnections = channels
+    .get(channel)
+    .filter(({ socket }) => socket.readyState === socket.OPEN);
+  if (activeConnections.length <= 0) {
+    channels.delete(channel);
+  }
+};
 
 const error = (socket, message) =>
   socket.send(JSON.stringify({ error: true, message }));
