@@ -16,11 +16,13 @@ export const Index = () => {
     // we need to compute current state from received messages
     let neededGameState;
     for (let index = messages.length - 1; index >= 0; index--) {
-      const message = JSON.parse(messages[index]);
-      if (message.type === 'gamestate' && message.state) {
-        neededGameState = message.state;
-        break;
-      }
+      try {
+        const message = JSON.parse(messages[index]);
+        if (message.type === 'gamestate' && message.state) {
+          neededGameState = message.state;
+          break;
+        }
+      } catch {}
     }
     if (
       gameState &&
