@@ -28,7 +28,11 @@ export default {
         }
       } catch {}
     }
-    return playedCards;
+    return playedCards.sort((cardA, cardB) => {
+      if (cardA.card.idx < cardB.card.idx) return -1;
+      if (cardA.card.idx > cardB.card.idx) return 1;
+      return 0;
+    });
   },
 
   subscribe: function(callback) {

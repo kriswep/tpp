@@ -48,7 +48,6 @@ const ResultCard = styled(
 
 const Result = ({ noCenter }) => {
   const playedCards = MessageStore.getPlayedCards();
-  console.log(playedCards);
   const Inner = playedCards.map((played, idx) => (
     <ResultCard key={idx} size="huge">
       <Text invert size="small">
