@@ -18,7 +18,7 @@ const Estimator = ({ id, gameState, send }) => {
       {gameState.matches('play') && <Cards send={send} id={id} />}
       {gameState.matches('result') && (
         <ScreenCenterer>
-          <Result noCenter={true} />
+          <Result />
         </ScreenCenterer>
       )}
     </>

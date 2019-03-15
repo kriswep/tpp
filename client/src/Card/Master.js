@@ -29,7 +29,7 @@ const Listen = ({ gameState, next }) => {
         )}
         {gameState.matches('result') && (
           <Poser key={gameState.value}>
-            <Result noCenter={true} />
+            <Result />
           </Poser>
         )}
       </PoseGroup>
