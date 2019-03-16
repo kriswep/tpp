@@ -2,7 +2,6 @@ import React, { Component, Suspense } from 'react';
 import { createGlobalStyle, ThemeProvider } from 'styled-components/macro';
 
 import ErrorBoundary from './components/ErrorBoundary';
-import Nav from './components/Nav';
 import Routes from './Routes';
 
 const theme = {
@@ -50,10 +49,7 @@ class App extends Component {
         <GlobalStyle />
         <Suspense fallback={<div>Loading...</div>}>
           <ThemeProvider theme={theme}>
-            <>
-              <Nav />
-              <Routes />
-            </>
+            <Routes />
           </ThemeProvider>
         </Suspense>
       </ErrorBoundary>

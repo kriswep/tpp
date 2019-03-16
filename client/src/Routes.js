@@ -1,15 +1,14 @@
 import React, { lazy } from 'react';
 import { Router } from '@reach/router';
 
-import Home from './Home';
-const Card = lazy(() => import('./Card' /* webpackChunkName: "card" */));
+import Card from './Card';
+
 const Chat = lazy(() => import('./Chat' /* webpackChunkName: "chat" */));
 
 const Routes = props => {
   return (
     <Router>
-      <Home path="/" />
-      <Card path="/card" />
+      <Card path="/" />
       <Chat path="/chat" />
     </Router>
   );

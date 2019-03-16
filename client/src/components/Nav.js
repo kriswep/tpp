@@ -9,8 +9,7 @@ const StyledLink = styled(Link)`
 const Nav = () => {
   return (
     <nav>
-      <StyledLink to="/">Home</StyledLink>{' '}
-      <StyledLink to="card">Card</StyledLink>{' '}
+      <StyledLink to="/">Estimation</StyledLink>{' '}
       <StyledLink to="chat">Chat</StyledLink>
     </nav>
   );
