@@ -86,6 +86,7 @@ server.on('connection', (socket, req) => {
   });
 });
 
+// TODO: crashes when no channels left on .filter (refresh when no host is connected)
 const closeChannelWhenEmpty = channel => {
   activeConnections = channels
     .get(channel)
