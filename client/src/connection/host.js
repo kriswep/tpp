@@ -13,6 +13,7 @@ export default function(channel, name) {
   const socket = new SimpleWebsocket(socketUrl);
   socket.on('close', function() {
     console.log('Socket closed');
+
     emitter = new EventEmitter();
     closeCallback && closeCallback();
     closeCallback = null;
@@ -54,6 +55,14 @@ export default function(channel, name) {
 
           p.send(msg);
         });
+    });
+
+    rtc.on('close', function() {
+      console.log('peer connection closed');
+    });
+
+    rtc.on('error', function(err) {
+      console.log(`rtc error: ${err}`);
     });
   });
 

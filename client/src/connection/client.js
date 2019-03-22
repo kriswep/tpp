@@ -2,9 +2,10 @@ import SimplePeer from 'simple-peer';
 import SimpleWebsocket from 'simple-websocket';
 import EventEmitter from 'eventemitter3';
 
-const emitter = new EventEmitter();
+let emitter = new EventEmitter();
 
 const socketUrl = `ws://${window.location.hostname}:3210`;
+let closeCallback;
 
 export default function(channel, name) {
   const socket = new SimpleWebsocket(socketUrl);
@@ -44,6 +45,18 @@ export default function(channel, name) {
       console.log(`Data via rtc: ${msg}`);
       emitter.emit('message', msg);
     });
+
+    rtc.on('close', function() {
+      console.log('rtc closed');
+
+      emitter = new EventEmitter();
+      closeCallback && closeCallback();
+      closeCallback = null;
+    });
+
+    rtc.on('error', function(err) {
+      console.log(`rtc error: ${err}`);
+    });
   });
 
   const client = {
@@ -65,7 +78,7 @@ export default function(channel, name) {
     },
 
     onClose: function(callback) {
-      // closeCallback = callback;
+      closeCallback = callback;
     },
   };
 
