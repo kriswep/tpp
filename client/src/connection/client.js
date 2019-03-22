@@ -46,7 +46,7 @@ export default function(channel, name) {
     });
   });
 
-  return {
+  const client = {
     id: {
       channel,
       name,
@@ -63,5 +63,11 @@ export default function(channel, name) {
     onMessage: function(cb) {
       emitter.on('message', cb);
     },
+
+    onClose: function(callback) {
+      // closeCallback = callback;
+    },
   };
+
+  return client;
 }

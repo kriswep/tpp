@@ -8,6 +8,7 @@ export const CONNECTION_TYPE = {
   PLAYER: 20,
   SPECTATOR: 30,
 };
+
 let connection = null;
 let connectionType = null;
 const emitter = new EventEmitter();
@@ -21,6 +22,17 @@ function setupConnection(conn) {
   conn.onMessage(function(msg) {
     emitter.emit('message', msg);
   });
+
+  conn.onClose(closeConnection);
+}
+
+function closeConnection() {
+  console.log('closing connection');
+  connection = null;
+  connectionType = null;
+
+  // emitter.emit('message', {});
+  emitter.emit('status');
 }
 
 export default {
@@ -71,5 +83,9 @@ export default {
 
   join: function(channel, name) {
     setupConnection(ClientConnection(channel, name));
+  },
+
+  onClose: function() {
+    closeConnection();
   },
 };

@@ -2,15 +2,20 @@ import SimplePeer from 'simple-peer';
 import SimpleWebsocket from 'simple-websocket';
 import EventEmitter from 'eventemitter3';
 
-const emitter = new EventEmitter();
+let emitter = new EventEmitter();
 let peers = [];
 
 const socketUrl = `ws://${window.location.hostname}:3210`;
+
+let closeCallback;
 
 export default function(channel, name) {
   const socket = new SimpleWebsocket(socketUrl);
   socket.on('close', function() {
     console.log('Socket closed');
+    emitter = new EventEmitter();
+    closeCallback && closeCallback();
+    closeCallback = null;
   });
   socket.on('error', function(err) {
     console.log('Socket error');
@@ -52,7 +57,7 @@ export default function(channel, name) {
     });
   });
 
-  return {
+  const host = {
     id: {
       channel,
       name,
@@ -75,5 +80,10 @@ export default function(channel, name) {
     onMessage: function(callback) {
       emitter.on('message', callback);
     },
+
+    onClose: function(callback) {
+      closeCallback = callback;
+    },
   };
+  return host;
 }
