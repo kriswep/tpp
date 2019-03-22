@@ -27,7 +27,7 @@ server.on('connection', (socket, req) => {
         return error(socket, 'channel used');
       }
       socket.channel = message.channel;
-      console.log(`Host ${ip}  in channel ${socket.channel} connected.`);
+      console.log(`Host ${ip} in channel ${socket.channel} connected.`);
       return channels.set(message.channel, [
         { type: message.type, name: message.name, socket },
       ]);
@@ -36,14 +36,14 @@ server.on('connection', (socket, req) => {
       const channel = channels.get(message.channel);
       if (!channel) {
         console.log(
-          `Client ${ip}  tried to connect channel ${
+          `Client ${ip} tried to connect channel ${
             socket.channel
           }. But it didn't exist.`,
         );
         return error(socket, 'channel unknown');
       }
       socket.channel = message.channel;
-      console.log(`Client ${ip}  in channel ${socket.channel} connected.`);
+      console.log(`Client ${ip} in channel ${socket.channel} connected.`);
 
       return channels.set(message.channel, [
         ...channel,
@@ -64,7 +64,7 @@ server.on('connection', (socket, req) => {
         ) {
           return;
         }
-        console.log(`Signaling ${ip}  in channel ${socket.channel}: ${msg}`);
+        console.log(`Signaling ${ip} in channel ${socket.channel}: ${msg}`);
         other.socket.send(msg);
       });
     }
@@ -78,7 +78,7 @@ server.on('connection', (socket, req) => {
           req.headers['x-forwarded-for'].split(/\s*,\s*/)[0])) ||
       (req.connection && req.connection.remoteAddress);
     console.log(
-      `Socket ${ip}  in channel ${
+      `Socket ${ip} in channel ${
         socket.channel
       } closed with ${code}. Reason: ${reason}`,
     );
@@ -86,13 +86,14 @@ server.on('connection', (socket, req) => {
   });
 });
 
-// TODO: crashes when no channels left on .filter (refresh when no host is connected)
 const closeChannelWhenEmpty = channel => {
-  activeConnections = channels
-    .get(channel)
-    .filter(({ socket }) => socket.readyState === socket.OPEN);
+  const activeChannel = channels.get(channel);
+  const activeConnections = !activeChannel
+    ? [] // so it doesn't crash when channel does not exist
+    : activeChannel.filter(({ socket }) => socket.readyState === socket.OPEN);
   if (activeConnections.length <= 0) {
     channels.delete(channel);
+    console.log(`Channel ${channel} was closed.`);
   }
 };
 
