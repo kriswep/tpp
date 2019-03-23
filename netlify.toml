@@ -11,6 +11,9 @@
   # Default build command.
   command = "NODE_ENV=production npm run build"
 
+[build.environment]
+  REACT_APP_SOCKET_URL = "wss://api.andteam.app"
+
 # A redirect rule with all the supported properties
 [[redirects]]
   from = "/api/broker"
