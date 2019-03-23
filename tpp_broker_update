@@ -1,0 +1,20 @@
+# scp new server file
+rm -rf server/node_modules
+scp -r server do:~/tpp-broker
+
+# build image, on server (here)
+cd tpp-broker
+sudo docker build -t andteam/tpp-broker .
+
+# stop and remove old
+sudo docker stop tpp-broker
+sudo docker rm tpp-broker
+
+# new docker service
+sudo docker run -d \
+--name tpp-broker \
+--restart always \
+andteam/tpp-broker
+
+# view logs if needed
+sudo docker logs tpp-broker

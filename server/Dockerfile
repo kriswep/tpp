@@ -1,4 +1,4 @@
-# v1
+# v1.1
 # see: https://www.digitalocean.com/community/tutorials/how-to-build-a-node-js-application-with-docker
 FROM node:10-alpine
 
