@@ -2,10 +2,10 @@ import SimplePeer from 'simple-peer';
 import SimpleWebsocket from 'simple-websocket';
 import EventEmitter from 'eventemitter3';
 
+import { socketUrl } from '../constants';
+
 let emitter = new EventEmitter();
 let peers = [];
-
-const socketUrl = `ws://${window.location.hostname}:3210`;
 
 let closeCallback;
 
