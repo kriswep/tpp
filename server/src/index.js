@@ -30,7 +30,7 @@ server.on('connection', (socket, req) => {
       socket.host = true;
       console.log(`Host ${ip} in channel ${socket.channel} connected.`);
       return channels.set(message.channel, [
-        { type: message.type, name: message.name, socket },
+        { type: message.type, name: message.name, id: message.id, socket },
       ]);
     }
     if (message && message.type === 'client' && message.channel) {
@@ -48,7 +48,7 @@ server.on('connection', (socket, req) => {
 
       return channels.set(message.channel, [
         ...channel,
-        { type: message.type, name: message.name, socket },
+        { type: message.type, name: message.name, id: message.id, socket },
       ]);
     }
 
@@ -77,6 +77,8 @@ server.on('connection', (socket, req) => {
       message &&
       (message.type === 'gamestate' || message.type === 'card')
     ) {
+      console.log(`Message ${ip} in channel ${socket.channel}: ${msg}`);
+
       const channel = channels.get(socket.channel);
       return channel
         .filter(other => other.type === 'client') // only to client
@@ -87,8 +89,10 @@ server.on('connection', (socket, req) => {
           ) {
             return;
           }
-          console.log(`Message ${ip} in channel ${socket.channel}: ${msg}`);
-          other.socket.send(msg);
+          console.log(other);
+          if (other.id !== message.id || !message.id) {
+            other.socket.send(msg);
+          }
         });
     }
 
@@ -99,6 +103,8 @@ server.on('connection', (socket, req) => {
       message &&
       (message.type === 'gamestate' || message.type === 'card')
     ) {
+      console.log(`Message ${ip} in channel ${socket.channel}: ${msg}`);
+
       const channel = channels.get(socket.channel);
       return channel
         .filter(({ socket }) => socket.readyState === socket.OPEN)
@@ -110,8 +116,9 @@ server.on('connection', (socket, req) => {
           ) {
             return;
           }
-          console.log(`Message ${ip} in channel ${socket.channel}: ${msg}`);
-          other.socket.send(msg);
+          if (other.id !== message.id || !message.id) {
+            other.socket.send(msg);
+          }
         });
     }
     return error(socket, 'invalid message');

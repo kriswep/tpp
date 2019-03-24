@@ -25,7 +25,9 @@ export default function(channel, name) {
   socket.on('connect', function() {
     console.log('WS connected');
 
-    socket.send(JSON.stringify({ type: 'host', channel, name }));
+    socket.send(
+      JSON.stringify({ type: 'host', channel, name, id: socket._id }),
+    );
   });
   socket.on('data', function(data) {
     const dataObj = JSON.parse(data);
@@ -95,7 +97,8 @@ export default function(channel, name) {
         });
       // send via ws as fallback
       if (socket.connected) {
-        socket.send(message);
+        // socket.send(message);
+        socket.send(JSON.stringify({ ...JSON.parse(message), id: socket._id }));
       }
     },
 
