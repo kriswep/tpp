@@ -86,6 +86,20 @@ server.on('connection', (socket, req) => {
   });
 });
 
+// housekeeping
+const interval = setInterval(function housekeeping() {
+  channels.forEach((channel, key) => {
+    channel
+      .filter(({ socket }) => socket.readyState === socket.OPEN)
+      .map(({ socket }) => {
+        socket.ping(() => {});
+        // socket.send(JSON.stringify({ type: 'heartbeat' }));
+      });
+
+    closeChannelWhenEmpty(key);
+  });
+}, 20000);
+
 const closeChannelWhenEmpty = channel => {
   const activeChannel = channels.get(channel);
   const activeConnections = !activeChannel
