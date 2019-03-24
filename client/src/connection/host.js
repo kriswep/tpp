@@ -28,42 +28,50 @@ export default function(channel, name) {
     socket.send(JSON.stringify({ type: 'host', channel, name }));
   });
   socket.on('data', function(data) {
-    data = JSON.parse(data);
-    if (data.type !== 'offer') return;
-    const rtc = new SimplePeer({ initiator: false, trickle: false });
+    const dataObj = JSON.parse(data);
+    if (dataObj.type === 'offer') {
+      const rtc = new SimplePeer({ initiator: false, trickle: false });
 
-    rtc.signal(data);
-    rtc.on('signal', function(data) {
-      socket.send(JSON.stringify(data));
-    });
+      rtc.signal(dataObj);
+      rtc.on('signal', function(data) {
+        socket.send(JSON.stringify(data));
+      });
 
-    rtc.on('connect', function() {
-      peers.push(rtc);
-    });
+      rtc.on('connect', function() {
+        peers.push(rtc);
+      });
 
-    rtc.on('data', function(message) {
-      const msg = new TextDecoder('utf-8').decode(message);
+      rtc.on('data', function(message) {
+        const msg = new TextDecoder('utf-8').decode(message);
+        emitter.emit('message', msg);
+
+        //as host, we need to broadcast the data to the other peers
+        peers
+          .filter(p => p.connected)
+          .forEach(function(p) {
+            if (p === rtc) {
+              return;
+            }
+
+            p.send(msg);
+          });
+      });
+
+      rtc.on('close', function() {
+        console.log('peer connection closed');
+      });
+
+      rtc.on('error', function(err) {
+        console.log(`rtc error: ${err}`);
+      });
+    }
+
+    // Fallback: broadcast per WS
+    if (dataObj.type === 'gamestate' || dataObj.type === 'card') {
+      const msg = new TextDecoder('utf-8').decode(data);
       emitter.emit('message', msg);
-
-      //as host, we need to broadcast the data to the other peers
-      peers
-        .filter(p => p.connected)
-        .forEach(function(p) {
-          if (p === rtc) {
-            return;
-          }
-
-          p.send(msg);
-        });
-    });
-
-    rtc.on('close', function() {
-      console.log('peer connection closed');
-    });
-
-    rtc.on('error', function(err) {
-      console.log(`rtc error: ${err}`);
-    });
+      socket.send(msg);
+    }
   });
 
   const host = {
@@ -79,11 +87,16 @@ export default function(channel, name) {
     },
 
     send: function(message) {
+      // send to connected wrtc peers
       peers
         .filter(p => p.connected)
         .forEach(function(p) {
           p.send(message);
         });
+      // send via ws as fallback
+      if (socket.connected) {
+        socket.send(message);
+      }
     },
 
     onMessage: function(callback) {

@@ -30,9 +30,17 @@ export default function(channel, name) {
     });
 
     socket.on('data', function(data) {
-      data = JSON.parse(data);
-      if (data.type !== 'answer') return;
-      rtc.signal(data);
+      const dataObj = JSON.parse(data);
+      if (dataObj.type === 'answer') {
+        rtc.signal(dataObj);
+      } else if (!rtc.connected) {
+        if (dataObj.type === 'gamestate' || dataObj.type === 'card') {
+          // Fallback ws if rtc did not work
+          const msg = new TextDecoder('utf-8').decode(data);
+          console.log(`Data via ws: ${msg}`);
+          emitter.emit('message', msg);
+        }
+      }
     });
 
     rtc.on('connect', function() {
@@ -48,16 +56,26 @@ export default function(channel, name) {
     });
 
     rtc.on('close', function() {
-      console.log('rtc closed');
+      if (rtc.connected) {
+        console.log('rtc closed');
 
-      emitter = new EventEmitter();
-      closeCallback && closeCallback();
-      closeCallback = null;
+        emitter = new EventEmitter();
+        closeCallback && closeCallback();
+        closeCallback = null;
+      }
     });
 
     rtc.on('error', function(err) {
       console.log(`rtc error: ${err}`);
     });
+
+    setTimeout(() => {
+      // check if rtc connection worked out, otherwhise close rtc and use ws
+      if (!rtc.connected) {
+        emitter.emit('connected');
+        rtc.destroy();
+      }
+    }, 1000);
   });
 
   const client = {
@@ -71,7 +89,11 @@ export default function(channel, name) {
     },
 
     send: function(message) {
-      rtc.send(message);
+      if (rtc.connected) {
+        rtc.send(message);
+      } else if (socket.connected) {
+        socket.send(message);
+      }
     },
 
     onMessage: function(cb) {

@@ -27,6 +27,7 @@ server.on('connection', (socket, req) => {
         return error(socket, 'channel used');
       }
       socket.channel = message.channel;
+      socket.host = true;
       console.log(`Host ${ip} in channel ${socket.channel} connected.`);
       return channels.set(message.channel, [
         { type: message.type, name: message.name, socket },
@@ -69,8 +70,53 @@ server.on('connection', (socket, req) => {
       });
     }
 
+    // team broadcast alternative per websocket, on all connected if host
+    if (
+      socket.channel &&
+      socket.host &&
+      message &&
+      (message.type === 'gamestate' || message.type === 'card')
+    ) {
+      const channel = channels.get(socket.channel);
+      return channel
+        .filter(other => other.type === 'client') // only to client
+        .forEach(other => {
+          if (
+            other.socket === socket ||
+            other.socket.readyState !== other.socket.OPEN
+          ) {
+            return;
+          }
+          console.log(`Message ${ip} in channel ${socket.channel}: ${msg}`);
+          other.socket.send(msg);
+        });
+    }
+
+    // broadcast alternative per websocket, to host if not host
+    if (
+      socket.channel &&
+      !socket.host &&
+      message &&
+      (message.type === 'gamestate' || message.type === 'card')
+    ) {
+      const channel = channels.get(socket.channel);
+      return channel
+        .filter(({ socket }) => socket.readyState === socket.OPEN)
+        .filter(other => other.type === 'host') // only to host
+        .forEach(other => {
+          if (
+            other.socket === socket ||
+            other.socket.readyState !== other.socket.OPEN
+          ) {
+            return;
+          }
+          console.log(`Message ${ip} in channel ${socket.channel}: ${msg}`);
+          other.socket.send(msg);
+        });
+    }
     return error(socket, 'invalid message');
   });
+
   socket.on('close', (code, reason) => {
     const ip =
       (req &&
@@ -99,6 +145,8 @@ const interval = setInterval(function housekeeping() {
     closeChannelWhenEmpty(key);
   });
 }, 20000);
+
+// Todo: close channels and socket without host
 
 const closeChannelWhenEmpty = channel => {
   const activeChannel = channels.get(channel);
