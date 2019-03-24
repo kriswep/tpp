@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import Card from './Card';
 import Text from '../components/Text';
-
+// let isSelecting = false;
 const Cards = ({ id, send }) => {
   const [cards, setCards] = useState([
     { idx: 1, value: 0, selected: false, choosen: false },
@@ -18,6 +18,7 @@ const Cards = ({ id, send }) => {
     { idx: 11, value: 100, selected: false, choosen: false },
   ]);
 
+  const [double, setDouble] = useState(false);
   const select = e => {
     const newCards = cards.map(current => {
       const newCard = { ...current };
@@ -25,6 +26,7 @@ const Cards = ({ id, send }) => {
         if (newCard.selected) {
           newCard.choosen = true;
           // send choosen card to the world (aka to host)
+          setDouble(true);
           send(JSON.stringify({ type: 'card', card: newCard, id }));
         } else {
           newCard.selected = true;
@@ -63,8 +65,11 @@ const Cards = ({ id, send }) => {
             idx={card.idx}
             pose={pose}
             setPose={pose}
-            onTouchStart={select}
-            onMouseDown={select}
+            // disabled={isSelecting}
+            disabled={double}
+            // onTouchStart={select}
+            // onMouseDown={select}
+            onClick={select}
           >
             <Text invert>{card.value}</Text>
           </Card>

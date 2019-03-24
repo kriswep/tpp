@@ -91,7 +91,6 @@ export default function(channel, name) {
     },
 
     send: function(message) {
-      console.log(message);
       if (rtc.connected) {
         rtc.send(message);
       } else if (socket.connected) {

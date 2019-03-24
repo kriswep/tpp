@@ -84,7 +84,7 @@ const transform = scale => props => {
 };
 
 const Card = styled(
-  posed.div({
+  posed.button({
     hoverable: true,
     pressable: true,
     init: {

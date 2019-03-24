@@ -89,8 +89,10 @@ server.on('connection', (socket, req) => {
           ) {
             return;
           }
-          console.log(other);
-          if (other.id !== message.id || !message.id) {
+
+          if (!message.id || !message.id.id) {
+            other.socket.send(msg);
+          } else if (other.id !== message.id.id) {
             other.socket.send(msg);
           }
         });
@@ -116,7 +118,10 @@ server.on('connection', (socket, req) => {
           ) {
             return;
           }
-          if (other.id !== message.id || !message.id) {
+
+          if (!message.id || !message.id.id) {
+            other.socket.send(msg);
+          } else if (other.id !== message.id.id) {
             other.socket.send(msg);
           }
         });
