@@ -91,11 +91,18 @@ export default function(channel, name) {
     },
 
     send: function(message) {
+      console.log(message);
       if (rtc.connected) {
         rtc.send(message);
       } else if (socket.connected) {
         // socket.send({message});
-        socket.send(JSON.stringify({ ...JSON.parse(message), id: socket._id }));
+        const origMessage = JSON.parse(message);
+        socket.send(
+          JSON.stringify({
+            ...origMessage,
+            id: { ...origMessage.id, id: socket._id },
+          }),
+        );
       }
     },
 

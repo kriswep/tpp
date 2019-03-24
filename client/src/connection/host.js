@@ -98,7 +98,13 @@ export default function(channel, name) {
       // send via ws as fallback
       if (socket.connected) {
         // socket.send(message);
-        socket.send(JSON.stringify({ ...JSON.parse(message), id: socket._id }));
+        const origMessage = JSON.parse(message);
+        socket.send(
+          JSON.stringify({
+            ...origMessage,
+            id: { ...origMessage.id, id: socket._id },
+          }),
+        );
       }
     },
 
