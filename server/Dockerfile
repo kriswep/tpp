@@ -12,7 +12,7 @@ COPY package*.json ./
 USER node
 
 # install deps
-RUN npm install
+RUN npm install --production
 
 # Copy all other files
 COPY --chown=node:node . .
@@ -24,5 +24,6 @@ CMD [ "node", "./src/index.js" ]
 # Howto:
 # sudo docker build -t andteam/tpp-broker .
 # sudo docker images
-# sudo docker run --name tpp-broker -p 3210:3210 -d andteam/tpp-broker
+# sudo docker run --name tpp-broker --restart always -e "NODE_ENV=production" -m "100M" -p 3210:3210 -d andteam/tpp-broker
 # sudo docker logs tpp-broker
+# sudo docker stats tpp-broker
