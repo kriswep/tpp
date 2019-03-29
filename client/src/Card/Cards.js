@@ -58,6 +58,15 @@ const Cards = ({ id, send }) => {
             pose = 'choosen';
           }
         }
+        let labelText;
+        if (card.value === 1) {
+          labelText = `${card.value} point`;
+        } else {
+          labelText = `${card.value} points`;
+        }
+        if (card.selected) {
+          labelText = `Pick ${labelText}!`;
+        }
         return (
           <Card
             data-idx={card.idx}
@@ -70,6 +79,7 @@ const Cards = ({ id, send }) => {
             // onTouchStart={select}
             // onMouseDown={select}
             onClick={select}
+            aria-label={labelText}
           >
             <Text invert>{card.value}</Text>
           </Card>
