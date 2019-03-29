@@ -16,8 +16,12 @@ const ConnectionForm = props => {
     }
   };
   return (
-    <div>
-      {props.connected ? <Text>Connected</Text> : <Text>Not connected</Text>}
+    <form method="post">
+      {props.connected ? (
+        <Text>Connected</Text>
+      ) : (
+        <Text>Please connect first.</Text>
+      )}
 
       <Input
         name="channel"
@@ -25,6 +29,7 @@ const ConnectionForm = props => {
         onChange={handleChange}
         placeholder="channel"
         type="text"
+        aria-label="Enter the channel name you wish to connect to."
       />
       <Input
         name="name"
@@ -32,10 +37,11 @@ const ConnectionForm = props => {
         onChange={handleChange}
         placeholder="name"
         type="text"
+        aria-label="Your name, so your teammates recognize you."
       />
       <Button onClick={props.onHost.bind(null, channel, name)}>Host</Button>
       <Button onClick={props.onJoin.bind(null, channel, name)}>Join</Button>
-    </div>
+    </form>
   );
 };
 

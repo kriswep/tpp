@@ -76,12 +76,14 @@ export default {
     emitter.off('status', cb);
   },
 
-  host: function(channel, name) {
+  host: function(channel, name, event) {
+    event.preventDefault();
     setupConnection(HostConnection(channel, name));
     connectionType = CONNECTION_TYPE.HOST;
   },
 
-  join: function(channel, name) {
+  join: function(channel, name, event) {
+    event.preventDefault();
     setupConnection(ClientConnection(channel, name));
   },
 
