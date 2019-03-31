@@ -1,46 +1,45 @@
 import SimplePeer from 'simple-peer';
-import SimpleWebsocket from 'simple-websocket';
 import EventEmitter from 'eventemitter3';
+import { v4 as uuid } from 'uuid';
 
 import { socketUrl } from '../constants';
+
+const id = uuid();
 
 let emitter = new EventEmitter();
 
 let closeCallback;
 
 export default function(channel, name) {
-  const socket = new SimpleWebsocket(socketUrl);
+  const socket = new WebSocket(socketUrl);
   let rtc;
-  socket.on('close', function() {
-    console.log('Socket closed');
+  socket.addEventListener('close', function(event) {
+    console.log('Socket closed', event);
   });
-  socket.on('error', function(err) {
-    console.log('Socket error');
-    console.log(err);
+  socket.addEventListener('error', function(err) {
+    console.log('Socket error', err);
   });
 
-  socket.on('connect', function() {
+  socket.addEventListener('open', function() {
     console.log('WS connected');
 
-    socket.send(
-      JSON.stringify({ type: 'client', channel, name, id: socket._id }),
-    );
+    socket.send(JSON.stringify({ type: 'client', channel, name, id }));
 
     rtc = new SimplePeer({ initiator: true, trickle: false });
     rtc.on('signal', function(data) {
-      socket.connected && socket.send(JSON.stringify(data));
+      socket.readyState === WebSocket.OPEN && socket.send(JSON.stringify(data));
     });
 
-    socket.on('data', function(data) {
+    socket.addEventListener('message', function(event) {
+      const data = event.data;
       const dataObj = JSON.parse(data);
       if (dataObj.type === 'answer') {
         rtc.signal(dataObj);
       } else if (!rtc.connected) {
         if (dataObj.type === 'gamestate' || dataObj.type === 'card') {
           // Fallback ws if rtc did not work
-          const msg = new TextDecoder('utf-8').decode(data);
-          console.log(`Data via ws: ${msg}`);
-          emitter.emit('message', msg);
+          console.log(`Data via ws: ${data}`);
+          emitter.emit('message', data);
         }
       }
     });
@@ -48,7 +47,7 @@ export default function(channel, name) {
     rtc.on('connect', function() {
       emitter.emit('connected');
       //we no longer need the signaler
-      socket.destroy();
+      socket.close();
     });
 
     rtc.on('data', function(message) {
@@ -93,13 +92,13 @@ export default function(channel, name) {
     send: function(message) {
       if (rtc.connected) {
         rtc.send(message);
-      } else if (socket.connected) {
+      } else if (socket.readyState === WebSocket.OPEN) {
         // socket.send({message});
         const origMessage = JSON.parse(message);
         socket.send(
           JSON.stringify({
             ...origMessage,
-            id: { ...origMessage.id, id: socket._id },
+            id: { ...origMessage.id, id },
           }),
         );
       }

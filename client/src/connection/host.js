@@ -1,8 +1,10 @@
 import SimplePeer from 'simple-peer';
-import SimpleWebsocket from 'simple-websocket';
 import EventEmitter from 'eventemitter3';
+import { v4 as uuid } from 'uuid';
 
 import { socketUrl } from '../constants';
+
+const id = uuid();
 
 let emitter = new EventEmitter();
 let peers = [];
@@ -10,33 +12,32 @@ let peers = [];
 let closeCallback;
 
 export default function(channel, name) {
-  const socket = new SimpleWebsocket(socketUrl);
-  socket.on('close', function() {
-    console.log('Socket closed');
+  const socket = new WebSocket(socketUrl);
+  socket.addEventListener('close', function(event) {
+    console.log('Socket closed:', event);
 
     emitter = new EventEmitter();
     closeCallback && closeCallback();
     closeCallback = null;
   });
-  socket.on('error', function(err) {
-    console.log('Socket error');
-    console.log(err);
+  socket.addEventListener('error', function(err) {
+    console.log('Socket error', err);
   });
-  socket.on('connect', function() {
+  socket.addEventListener('open', function() {
     console.log('WS connected');
 
-    socket.send(
-      JSON.stringify({ type: 'host', channel, name, id: socket._id }),
-    );
+    socket.send(JSON.stringify({ type: 'host', channel, name, id }));
   });
-  socket.on('data', function(data) {
+  socket.addEventListener('message', function(event) {
+    const data = event.data;
     const dataObj = JSON.parse(data);
     if (dataObj.type === 'offer') {
       const rtc = new SimplePeer({ initiator: false, trickle: false });
 
       rtc.signal(dataObj);
       rtc.on('signal', function(data) {
-        socket.send(JSON.stringify(data));
+        socket.readyState === WebSocket.OPEN &&
+          socket.send(JSON.stringify(data));
       });
 
       rtc.on('connect', function() {
@@ -70,9 +71,8 @@ export default function(channel, name) {
 
     // Fallback: broadcast per WS
     if (dataObj.type === 'gamestate' || dataObj.type === 'card') {
-      const msg = new TextDecoder('utf-8').decode(data);
-      emitter.emit('message', msg);
-      socket.send(msg);
+      emitter.emit('message', data);
+      socket.send(data);
     }
   });
 
@@ -96,13 +96,12 @@ export default function(channel, name) {
           p.send(message);
         });
       // send via ws as fallback
-      if (socket.connected) {
-        // socket.send(message);
+      if (socket.readyState === WebSocket.OPEN) {
         const origMessage = JSON.parse(message);
         socket.send(
           JSON.stringify({
             ...origMessage,
-            id: { ...origMessage.id, id: socket._id },
+            id: { ...origMessage.id, id },
           }),
         );
       }
