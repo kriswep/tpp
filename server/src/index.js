@@ -172,4 +172,4 @@ const closeChannelWhenEmpty = channel => {
 };
 
 const error = (socket, message) =>
-  socket.send(JSON.stringify({ error: true, message }));
+  socket.close(1003, JSON.stringify({ error: true, message }));
