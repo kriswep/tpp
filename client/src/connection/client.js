@@ -28,7 +28,7 @@ export default function(channel, name) {
 
     rtc = new SimplePeer({ initiator: true, trickle: false });
     rtc.on('signal', function(data) {
-      socket.send(JSON.stringify(data));
+      socket.connected && socket.send(JSON.stringify(data));
     });
 
     socket.on('data', function(data) {
