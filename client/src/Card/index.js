@@ -7,10 +7,11 @@ import useGameState from '../Manager/GameState';
 import Connect from '../connection/Connect';
 
 export const Index = () => {
-  const { id, connected, send, messages, isHost } = useConnection();
+  const { id, connected, send, messages, isHost, lastError } = useConnection();
   const { gameState, next } = useGameState(isHost ? send : null);
 
-  if (!connected) return <Connect connected={connected} />;
+  if (!connected)
+    return <Connect connected={connected} lastError={lastError} />;
 
   if (!isHost) {
     // we need to compute current state from received messages

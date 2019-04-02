@@ -14,10 +14,10 @@ let closeCallback;
 export default function(channel, name) {
   const socket = new WebSocket(socketUrl);
   socket.addEventListener('close', function(event) {
-    console.log('Socket closed:', event);
+    console.log('Socket closed');
 
     emitter = new EventEmitter();
-    closeCallback && closeCallback();
+    closeCallback && closeCallback(event.reason);
     closeCallback = null;
   });
   socket.addEventListener('error', function(err) {

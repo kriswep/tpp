@@ -2,8 +2,11 @@ import React from 'react';
 
 import ConnectionManager from '../connection/manager';
 import ConnectionForm from '../connection/ConnectionForm';
+import Text from '../components/Text';
 
 const Connect = props => {
+  const error = props.lastError && props.lastError.error;
+  const errorReason = error && `: ${props.lastError.message}`;
   return (
     <>
       <ConnectionForm
@@ -11,6 +14,12 @@ const Connect = props => {
         onHost={ConnectionManager.host}
         onJoin={ConnectionManager.join}
       />
+      {error && (
+        <Text>
+          Sorry, that did not work
+          {errorReason}
+        </Text>
+      )}
     </>
   );
 };

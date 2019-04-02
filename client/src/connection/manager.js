@@ -26,13 +26,15 @@ function setupConnection(conn) {
   conn.onClose(closeConnection);
 }
 
-function closeConnection() {
-  console.log('closing connection');
+function closeConnection(reason) {
+  console.log('closing connection for', reason);
   connection = null;
   connectionType = null;
-
-  // emitter.emit('message', {});
-  emitter.emit('status');
+  let error;
+  try {
+    error = JSON.parse(reason);
+  } catch {}
+  emitter.emit('error', error);
 }
 
 export default {
@@ -64,12 +66,20 @@ export default {
     emitter.on('message', cb);
   },
 
+  onError: function(cb) {
+    emitter.on('error', cb);
+  },
+
   onStatusChange: function(cb) {
     emitter.on('status', cb);
   },
 
   offMessage: function(cb) {
     emitter.off('message', cb);
+  },
+
+  offError: function(cb) {
+    emitter.off('error', cb);
   },
 
   offStatusChange: function(cb) {
