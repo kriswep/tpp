@@ -48,16 +48,19 @@ const ResultCard = styled(
 
 const Result = ({ noCenter }) => {
   const playedCards = MessageStore.getPlayedCards();
-  const Inner = playedCards.map((played, idx) => (
-    <ResultCard key={idx} size="huge">
+  let Result = playedCards.map((played, idx) => (
+    <ResultCard key={idx}>
       <Text invert size="small">
         {played.id.name}
       </Text>
       <Text invert>{played.card.value}</Text>
     </ResultCard>
   ));
+  if (Result.length <= 0) {
+    Result = <Text size="huge">No estimates were made...</Text>;
+  }
 
-  return <Container>{Inner}</Container>;
+  return <Container>{Result}</Container>;
 };
 
 export default Result;
