@@ -58,6 +58,8 @@ export default function(channel, name) {
 
             p.send(msg);
           });
+        // and broadcast also to all websocket connected clients
+        socket.send(data);
       });
 
       rtc.on('close', function() {
@@ -73,6 +75,12 @@ export default function(channel, name) {
     if (dataObj.type === 'gamestate' || dataObj.type === 'card') {
       emitter.emit('message', data);
       socket.send(data);
+      // anb back to webrtc peers
+      peers
+        .filter(p => p.connected)
+        .forEach(function(p) {
+          p.send(data);
+        });
     }
   });
 

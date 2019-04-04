@@ -40,7 +40,7 @@ export default function(channel, name) {
       const data = event.data;
       const dataObj = JSON.parse(data);
       if (dataObj.type === 'answer') {
-        rtc.signal(dataObj);
+        rtc && rtc.signal(dataObj);
       } else if (!rtc.connected) {
         if (dataObj.type === 'gamestate' || dataObj.type === 'card') {
           // Fallback ws if rtc did not work
@@ -81,6 +81,7 @@ export default function(channel, name) {
       if (!rtc.connected) {
         emitter.emit('connected');
         rtc.destroy();
+        rtc = false;
       }
     }, 1000);
   });
