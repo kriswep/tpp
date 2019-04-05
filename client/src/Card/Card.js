@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro';
 import posed from 'react-pose';
 
-const height = window.innerHeight;
+const height = Math.min(window.innerHeight, 700);
 
 const transform = scale => props => {
   if (props.setPose === 'selected')
@@ -120,8 +120,8 @@ const Card = styled(
   }),
 )`
   position: fixed;
-  bottom: 0;
   left: calc(50% - 50px);
+  bottom: ${() => `${window.innerHeight < 800 ? 0 : 50}px`};
   color: ${({ theme }) => (theme.mode === 'dark' ? theme.dark : theme.light)};
   background-color: ${({ theme }) =>
     theme.mode === 'dark' ? theme.light : theme.dark};
