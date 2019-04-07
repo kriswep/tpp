@@ -1,8 +1,8 @@
 {
-  "name": "tpp-client",
+  "name": "estimation-client",
   "version": "0.1.0",
   "private": true,
-  "description": "client service for tpp",
+  "description": "client service for estimation",
   "scripts": {
     "dev": "react-scripts start",
     "start": "react-scripts start",
