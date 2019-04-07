@@ -59,7 +59,7 @@ export default function(channel, name) {
             p.send(msg);
           });
         // and broadcast also to all websocket connected clients
-        socket.send(data);
+        socket.send(msg);
       });
 
       rtc.on('close', function() {
