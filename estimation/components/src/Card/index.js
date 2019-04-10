@@ -5,7 +5,7 @@ import Estimator from './Estimator';
 import useConnection from '../Manager/Connection';
 import useGameState from '../Manager/GameState';
 import Connect from '../connection/Connect';
-window.React1 = require('react');
+
 export const Index = () => {
   const { id, connected, send, messages, isHost, lastError } = useConnection();
   const { gameState, next } = useGameState(isHost ? send : null);
@@ -23,7 +23,7 @@ export const Index = () => {
           neededGameState = message.state;
           break;
         }
-      } catch {}
+      } catch (e) {}
     }
     if (
       gameState &&
@@ -35,10 +35,10 @@ export const Index = () => {
   }
 
   return (
-    <>
+    <React.Fragment>
       {isHost && <Master gameState={gameState} next={next} id={id} />}
       {!isHost && <Estimator gameState={gameState} send={send} id={id} />}
-    </>
+    </React.Fragment>
   );
 };
 
