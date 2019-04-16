@@ -1,4 +1,4 @@
-import { Machine } from 'xstate';
+import { Machine } from 'xstate/lib/Machine';
 // import MessageStore from '../connection/MessageStore';
 
 const roundMachine = (initial = 'intro') => {

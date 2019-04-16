@@ -1,13 +1,17 @@
 {
   "name": "root",
   "private": true,
+  "workspaces": [
+    "packages/*",
+    "estimation/*"
+  ],
   "devDependencies": {
     "lerna": "^3.13.0"
   },
   "scripts": {
-    "estimation:dev": "lerna run dev --stream --scope 'estimation-*'",
-    "estimation:start": "npx lerna run start --stream --scope 'estimation-*'",
-    "estimation:build": "npx lerna run build --stream --scope 'estimation-*'",
-    "estimation:test": "npx lerna run test --stream --scope 'estimation-*'"
+    "estimation:dev": "SKIP_PREFLIGHT_CHECK=true lerna run dev --stream --scope 'estimation-*'",
+    "estimation:start": "SKIP_PREFLIGHT_CHECK=true lerna run start --stream --scope 'estimation-*'",
+    "estimation:build": "SKIP_PREFLIGHT_CHECK=true lerna run build --stream --scope 'estimation-*'",
+    "estimation:test": "SKIP_PREFLIGHT_CHECK=true lerna run test --stream --scope 'estimation-*'"
   }
 }

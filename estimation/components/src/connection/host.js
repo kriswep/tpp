@@ -1,4 +1,4 @@
-import SimplePeer from 'simple-peer';
+import SimplePeer from 'simple-peer/simplepeer.min';
 import EventEmitter from 'eventemitter3';
 // import { v4 as uuid } from 'uuid';
 import uuid from 'uuid/v4';
