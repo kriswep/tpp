@@ -1,7 +1,7 @@
-# andteam estimation
+# andteam
 
-team estimation planning
+## First feature
 
-### ShoutOut
+Plan your task collaborativly, with team based estimation meetings.
 
-initial WebRTC setup inspired by https://codeutopia.net/blog/2016/02/08/using-webrtc-and-react-to-build-a-basic-chat-server/
+[AndTeam Estimation](https://estimation.andteam.app)
