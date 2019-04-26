@@ -15,7 +15,7 @@ export default function(channel, name) {
   let rtc;
   socket.addEventListener('close', function(event) {
     console.log('Socket closed', event);
-    if (!rtc.connected) {
+    if (!rtc || !rtc.connected) {
       // no rtc, then closing ws connection is crucial
       emitter = new EventEmitter();
       closeCallback && closeCallback(event.reason);
