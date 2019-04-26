@@ -8,7 +8,6 @@ const theme = {
   dark: '#020202',
   light: '#fcfcfc',
   mode: 'dark',
-  fontUrl: `${process.env.PUBLIC_URL}/radnikanext-medium-webfont.woff2`,
   small: '0.8rem',
   normal: '1.5rem',
   big: '3rem',
@@ -16,12 +15,6 @@ const theme = {
 };
 
 const GlobalStyle = createGlobalStyle`
-  @font-face {
-    font-family: 'radnika_next';
-    src: ${props => `url('${theme.fontUrl}') format('woff2')`};
-    font-weight: normal;
-    font-style: normal;
-  }
   html {
     box-sizing: border-box;
     font-size: 10px;

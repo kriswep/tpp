@@ -1,5 +1,11 @@
 const protocolPrefix = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
 
-export const socketUrl = process.env.REACT_APP_SOCKET_URL
-  ? process.env.REACT_APP_SOCKET_URL
-  : `${protocolPrefix}${window.location.host}/api/broker`;
+export let socketUrl;
+
+if (process.env.REACT_APP_SOCKET_URL) {
+  socketUrl = process.env.REACT_APP_SOCKET_URL;
+} else if (process.env.GATSBY_APP_SOCKET_URL) {
+  socketUrl = process.env.GATSBY_APP_SOCKET_URL;
+} else {
+  socketUrl = `${protocolPrefix}${window.location.host}/api/broker`;
+}
