@@ -15,7 +15,7 @@ const Button = styled.button`
   align-self: ${({ align = 'initial' }) => align};
   margin: 1rem 1rem 1rem 0;
   padding: 0.5rem;
-  text-align: left;
+  text-align: ${({ text }) => text};
   width: 20rem;
 `;
 

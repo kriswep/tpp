@@ -53,10 +53,12 @@ const ConnectionForm = props => {
           />
         </Fieldset>
         <Fieldset>
-          <Button onClick={props.onHost.bind(null, channel, name)}>
+          <Button text="left" onClick={props.onHost.bind(null, channel, name)}>
             Create
           </Button>
-          <Button onClick={props.onJoin.bind(null, channel, name)}>Join</Button>
+          <Button text="left" onClick={props.onJoin.bind(null, channel, name)}>
+            Join
+          </Button>
         </Fieldset>
       </form>
     </ScreenCenterer>
