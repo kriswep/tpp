@@ -10,6 +10,9 @@ const Text = styled.input`
     'Helvetica Neue', sans-serif;
   font-size: 1.5rem;
   line-height: 2;
+  margin: 1rem 1rem 1rem 0;
+  padding: 0.5rem;
+  width: 20rem;
 `;
 
 export default Text;
