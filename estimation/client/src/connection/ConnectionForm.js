@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components/macro';
 
+import useLocalStorage from '../useLocalStorage';
 import ScreenCenterer from '../components/ScreenCenterer';
 import Text from '../components/Text';
 import Input from '../components/Input';
@@ -13,8 +14,8 @@ const Fieldset = styled.fieldset`
 `;
 
 const ConnectionForm = props => {
-  const [channel, setChannel] = useState('');
-  const [name, setName] = useState('');
+  const [channel, setChannel] = useLocalStorage('tpp-channel');
+  const [name, setName] = useLocalStorage('tpp-name');
 
   const handleChange = e => {
     if (e.target.name === 'channel') {
