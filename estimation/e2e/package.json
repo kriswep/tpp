@@ -1,0 +1,30 @@
+{
+  "name": "estimation-e2e",
+  "version": "0.1.0",
+  "private": true,
+  "description": "end to end test for estimation",
+  "scripts": {
+    "test": "cypress open",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
+  },
+  "devDependencies": {
+    "@testing-library/cypress": "^4.0.3",
+    "cypress": "^3.3.1",
+    "prettier": "^1.16.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kriswep/tpp.git"
+  },
+  "author": "Christoph Benjamin Weber",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kriswep/tpp/issues"
+  },
+  "homepage": "https://github.com/kriswep/tpp#readme",
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all"
+  }
+}
