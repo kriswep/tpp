@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ScreenCenterer from '../components/ScreenCenterer';
-import Explain from '../components/Explain';
+import Listen from '../components/Listen';
 import Result from '../components/Result';
 import Cards from './Cards';
 
@@ -12,7 +12,7 @@ const Estimator = ({ id, gameState, send }) => {
     <>
       {gameState.matches('intro') && (
         <ScreenCenterer>
-          <Explain noCenter={true} />
+          <Listen noCenter={true} />
         </ScreenCenterer>
       )}
       {gameState.matches('play') && <Cards send={send} id={id} />}

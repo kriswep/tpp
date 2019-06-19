@@ -1,7 +1,7 @@
 const manualWebSocket = require('manual-web-socket');
 // see https://github.com/baal-cadar/manual-web-socket
 describe('Host Application', () => {
-  it('Connect, send and receive message, receive message, close', () => {
+  it('host an estimation round', () => {
     cy.visit('/', {
       onBeforeLoad(win) {
         /**
@@ -88,8 +88,6 @@ describe('Host Application', () => {
         /**
          * check proper results
          */
-        .getByText(/estimation/i)
-        .should('exist')
         .getByText(/8/i)
         .getByText(/client1/i)
         .getByText(/5/i)

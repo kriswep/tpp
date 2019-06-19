@@ -1,7 +1,7 @@
 const manualWebSocket = require('manual-web-socket');
 // see https://github.com/baal-cadar/manual-web-socket
-describe('Host Application', () => {
-  it('Connect, send and receive message, receive message, close', () => {
+describe('Client Application', () => {
+  it('should participate in an estimation round', () => {
     cy.visit('/', {
       onBeforeLoad(win) {
         /**
@@ -54,7 +54,7 @@ describe('Host Application', () => {
           ); // Get tracked connection
           trackedConnection.readyState = win.mws.readyState.OPEN; // Change readyState from initial `CONNECTING` to `OPEN`
         })
-        .getByText(/Explain/i)
+        .getByText(/Listen/i)
         .should('exist')
         /**
          * Switch to estimation making
@@ -115,8 +115,6 @@ describe('Host Application', () => {
         /**
          * check proper results
          */
-        .getByText(/estimation/i)
-        .should('exist')
         .getByText(/3/i)
         .getByText(/testclient/i)
         .getByText(/8/i)

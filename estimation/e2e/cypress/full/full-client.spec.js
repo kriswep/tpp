@@ -11,7 +11,7 @@ describe('The client connection', function() {
     // enter an estimation
     cy.readFile('events/hostconnected');
     cy.getByText(/join/i).click();
-    cy.getByText(/Explain/i).should('exist');
+    cy.getByText(/Listen/i).should('exist');
     cy.writeFile('events/client1connected', 'connected');
 
     // wait for estimation cards and click option 3
