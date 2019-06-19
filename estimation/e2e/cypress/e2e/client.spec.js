@@ -23,15 +23,15 @@ describe('Host Application', () => {
       },
     }).then(win => {
       let trackedConnection; // ManualWebSocket connection reference
-      const cardClient1 = {
+      const cardOtherClient1 = {
         type: 'card',
         card: { idx: 7, value: 8, selected: true, choosen: true },
-        id: { channel: 'TestChannel', name: 'TestClient1' },
+        id: { channel: 'TestChannel', name: 'TestOtherClient1' },
       };
-      const cardClient2 = {
+      const cardOtherClient2 = {
         type: 'card',
         card: { idx: 6, value: 5, selected: true, choosen: true },
-        id: { channel: 'TestChannel', name: 'TestClient2' },
+        id: { channel: 'TestChannel', name: 'TestOtherClient2' },
       };
 
       /**
@@ -42,11 +42,11 @@ describe('Host Application', () => {
         .type('TestChannel')
         .getByPlaceholderText(/name/i)
         .click()
-        .type('TestHost')
+        .type('TestClient')
         /**
-         * host estimation round
+         * join estimation round
          */
-        .getByText(/create/i)
+        .getByText(/join/i)
         .click()
         .then(() => {
           trackedConnection = win.mws.trackedConnections.getByUrl(
@@ -59,19 +59,34 @@ describe('Host Application', () => {
         /**
          * Switch to estimation making
          */
-        .getByText(/start/i)
-        .click()
-        .getByText(/Wait/i)
-        .should('exist')
+        .then(() => {
+          /**
+           * Act as server and send gamestate to client
+           */
+          trackedConnection.reciveMessage({
+            data: JSON.stringify({
+              type: 'gamestate',
+              state: {
+                value: 'play',
+              },
+            }),
+          });
+        })
+        .getByText('3')
+        .closest('button')
+        .click('topRight', { force: true })
+        .getByText('3')
+        .closest('button')
+        .click('topRight', { force: true })
         /**
-         * receive some card messages
+         * receive some card messages from fake server
          */
         .then(() => {
           /**
            * Act as server and send first clients' card to WebSocket connection
            */
           trackedConnection.reciveMessage({
-            data: JSON.stringify(cardClient1),
+            data: JSON.stringify(cardOtherClient1),
           });
         })
         .then(() => {
@@ -79,17 +94,31 @@ describe('Host Application', () => {
            * Act as server and send second clients' card to WebSocket connection
            */
           trackedConnection.reciveMessage({
-            data: JSON.stringify(cardClient2),
+            data: JSON.stringify(cardOtherClient2),
           });
         })
-        .getByText(/finish/i)
-        .click()
+
+        .then(() => {
+          /**
+           * Act as server and send gamestate to client
+           */
+          trackedConnection.reciveMessage({
+            data: JSON.stringify({
+              type: 'gamestate',
+              state: {
+                value: 'result',
+              },
+            }),
+          });
+        })
 
         /**
          * check proper results
          */
         .getByText(/estimation/i)
         .should('exist')
+        .getByText(/3/i)
+        .getByText(/testclient/i)
         .getByText(/8/i)
         .getByText(/client1/i)
         .getByText(/5/i)
