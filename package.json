@@ -6,12 +6,15 @@
     "estimation/*"
   ],
   "devDependencies": {
-    "lerna": "^3.13.0"
+    "lerna": "^3.13.0",
+    "start-server-and-test": "^1.9.1"
   },
   "scripts": {
+    "lerna:bootstrap": "lerna bootstrap",
     "estimation:dev": "SKIP_PREFLIGHT_CHECK=true lerna run dev --stream --scope 'estimation-*'",
     "estimation:start": "SKIP_PREFLIGHT_CHECK=true lerna run start --stream --scope 'estimation-*'",
     "estimation:build": "SKIP_PREFLIGHT_CHECK=true lerna run build --stream --scope 'estimation-*'",
-    "estimation:test": "SKIP_PREFLIGHT_CHECK=true lerna run test --stream --scope 'estimation-*'"
+    "estimation:test": "SKIP_PREFLIGHT_CHECK=true lerna run test --stream --scope 'estimation-*'",
+    "test:ci": "start-server-and-test estimation:start tcp:3000 estimation:test"
   }
 }

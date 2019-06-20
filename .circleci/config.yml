@@ -1,0 +1,43 @@
+version: 2 # use CircleCI 2.0
+jobs: # a collection of steps
+  build: # runs not using Workflows must have a `build` job as entry point
+    working_directory: ~/tpp # directory where steps will run
+    docker: # run the steps with Docker
+      - image: cypress/base:10
+        environment:
+          ## this enables colors in the output
+          TERM: xterm
+    steps: # a collection of executable commands
+      - checkout # special step to check out source code to working directory
+
+      ##########################
+      # install dependencies
+      - restore_cache:
+          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run:
+          name: install root deps
+          command: yarn install --frozen-lockfile
+      - run:
+          name: install deps
+          command: yarn lerna:bootstrap
+      - save_cache: # special step to save the dependency cache
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+
+      ##########################
+      # run tests
+      - run:
+          name: test
+          command: yarn test:ci
+
+      ##########################
+      # Store results
+      - store_artifacts:
+          path: estimation/e2e/cypress/videos
+      - store_artifacts:
+          path: estimation/e2e/cypress/screenshots

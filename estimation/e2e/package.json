@@ -4,7 +4,7 @@
   "private": true,
   "description": "end to end test for estimation",
   "scripts": {
-    "test": "npm run test:full",
+    "test": "npm run cy:run",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "test:host:headed": "cypress run --spec=**/full-host.spec.js --headed --browser chrome --config integrationFolder=cypress/full",
