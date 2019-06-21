@@ -17,13 +17,13 @@ jobs: # a collection of steps
           keys:
             - v1-dependencies-{{ checksum "yarn.lock" }}
             # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-      - run:
-          name: install root deps
-          command: yarn install --frozen-lockfile
+            # - v1-dependencies-
       - run:
           name: install deps
-          command: yarn lerna:bootstrap
+          command: yarn install --frozen-lockfile
+      # - run:
+      # name: install deps
+      # command: yarn lerna:bootstrap
       - save_cache: # special step to save the dependency cache
           paths:
             - node_modules
@@ -36,8 +36,16 @@ jobs: # a collection of steps
           command: yarn test:ci
 
       ##########################
+      # run build
+      - run:
+          name: build
+          command: yarn estimation:build
+
+      ##########################
       # Store results
       - store_artifacts:
           path: estimation/e2e/cypress/videos
       - store_artifacts:
           path: estimation/e2e/cypress/screenshots
+      - store_artifacts:
+          path: estimation/client/build
