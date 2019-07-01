@@ -30,6 +30,7 @@ const Cards = ({ id, send }) => {
           send(JSON.stringify({ type: 'card', card: newCard, id }));
         } else {
           newCard.selected = true;
+          send(JSON.stringify({ type: 'card', card: newCard, id }));
         }
       } else {
         newCard.selected = false;

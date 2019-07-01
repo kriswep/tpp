@@ -90,6 +90,7 @@ export default function(channel, name) {
     id: {
       channel,
       name,
+      id,
     },
 
     onReady: function(callback) {
