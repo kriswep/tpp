@@ -21,57 +21,58 @@ const transform = scale => props => {
       translateY += 240;
       break;
     case 2:
-      deg = -72;
-      translateX -= 170;
-      translateY += 180;
+      deg = -70;
+      translateX -= 160;
+      translateY += 130;
       break;
     case 3:
-      deg = -54;
-      translateX -= 150;
-      translateY += 120;
-      break;
-    case 4:
-      deg = -36;
-      translateX -= 110;
-      translateY += 70;
-      break;
-    case 5:
-      deg = -18;
-      translateX -= 60;
-      translateY += 25;
+      deg = -45;
+      translateX -= 120;
+      translateY += 30;
       break;
 
-    case 6:
+    case 4:
       deg = 0;
       translateX += 0;
       translateY += 0;
       break;
 
+    case 5:
+      deg = 45;
+      translateX += 120;
+      translateY += 30;
+      break;
+    case 6:
+      deg = 70;
+      translateX += 160;
+      translateY += 130;
+      break;
     case 7:
-      deg = 18;
-      translateX += 60;
-      translateY += 25;
-      break;
-    case 8:
-      deg = 36;
-      translateX += 110;
-      translateY += 70;
-      break;
-    case 9:
-      deg = 54;
-      translateX += 150;
-      translateY += 120;
-      break;
-    case 10:
-      deg = 72;
-      translateX += 170;
-      translateY += 180;
-      break;
-    case 11:
       deg = 90;
       translateX += 180;
       translateY += 240;
       break;
+
+    // case 8:
+    //   deg = 36;
+    //   translateX += 110;
+    //   translateY += 70;
+    //   break;
+    // case 9:
+    //   deg = 54;
+    //   translateX += 150;
+    //   translateY += 120;
+    //   break;
+    // case 10:
+    //   deg = 72;
+    //   translateX += 170;
+    //   translateY += 180;
+    //   break;
+    // case 11:
+    //   deg = 90;
+    //   translateX += 180;
+    //   translateY += 240;
+    //   break;
 
     default:
       deg = 0;

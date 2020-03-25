@@ -5,17 +5,17 @@ import Text from '../components/Text';
 // let isSelecting = false;
 const Cards = ({ id, send }) => {
   const [cards, setCards] = useState([
-    { idx: 1, value: 0, selected: false, choosen: false },
-    { idx: 2, value: 0.5, selected: false, choosen: false },
-    { idx: 3, value: 1, selected: false, choosen: false },
-    { idx: 4, value: 2, selected: false, choosen: false },
-    { idx: 5, value: 3, selected: false, choosen: false },
-    { idx: 6, value: 5, selected: false, choosen: false },
-    { idx: 7, value: 8, selected: false, choosen: false },
-    { idx: 8, value: 13, selected: false, choosen: false },
-    { idx: 9, value: 20, selected: false, choosen: false },
-    { idx: 10, value: 40, selected: false, choosen: false },
-    { idx: 11, value: 100, selected: false, choosen: false },
+    // { idx: 1, value: 0, selected: false, choosen: false },
+    // { idx: 2, value: 0.5, selected: false, choosen: false },
+    { idx: 1, value: 1, selected: false, choosen: false },
+    { idx: 2, value: 2, selected: false, choosen: false },
+    { idx: 3, value: 3, selected: false, choosen: false },
+    { idx: 4, value: 5, selected: false, choosen: false },
+    { idx: 5, value: 8, selected: false, choosen: false },
+    { idx: 6, value: 13, selected: false, choosen: false },
+    { idx: 7, value: 21, selected: false, choosen: false },
+    // { idx: 10, value: 40, selected: false, choosen: false },
+    // { idx: 11, value: 100, selected: false, choosen: false },
   ]);
 
   const [double, setDouble] = useState(false);
